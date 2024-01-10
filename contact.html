@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 20px;
+            text-align: center;
+            margin-bottom: 0px;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .social-icons {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+        }
+        .social-icons a {
+            text-decoration: none;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Add some margin for separation */
+        }
+        label {
+            text-align: left;
+            display: block;
+            margin-bottom: 2px;
+            color: #495057;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .success-message {
+            color: #28a745;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Contact Us</h1>
+
+<div id="successMessage" class="success-message" style="display: none;">Message Sent Successfully!</div>
+
+<form id="contactForm" action="https://formspree.io/f/mayrygqg" method="POST">
+    
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="phone">Phone number:</label>
+    <input type="tel" name="phone" id="phone" required>
+
+    <label for="message">Message:</label>
+    <textarea name="message" id="message" rows="4" required></textarea>
+
+    <button type="submit" onclick="submitForm()">Send</button>
+</form>
+
+<p><i class="fas fa-envelope contact-icons">&nbsp;</i>Email: <a id="emailLink" href="#">legendaryoneff@gmail.com</a></p>
+<p><i class="fab fa-instagram contact-icons">&nbsp;</i>Instagram: <a href="https://www.instagram.com/legendaryoneofficial/" target="_blank">@legendaryoneofficial</a></p>
+<p><i class="fab fa-facebook contact-icons">&nbsp;</i>Facebook: <a href="https://www.facebook.com/vignesh.siva.kspm?mibextid=ZbWKwL" target="_blank">Vigneshsivakspm</a></p>
+<p><i class="fab fa-whatsapp contact-icons">&nbsp;</i>Whatsapp: <a href="https://wa.me/917339596165?text=Hello!">Message Me!</a></p>
+<p><i class="fas fa-phone-alt contact-icons">&nbsp;</i>Phone: <a href="tel:+917339596165">Call Me!</a></p>
+
+<script>
+    function submitForm() {
+        // You can add additional form submission logic here if needed
+        document.getElementById("successMessage").style.display = "block";
+        document.getElementById("contactForm").reset(); // Reset the form after submission
+    }
+
+    // Adjust email link based on user agent
+    var emailLink = document.getElementById("emailLink");
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // If mobile device, open Gmail app with receiver email
+        emailLink.href = "mailto:legendaryoneff@gmail.com?subject=Subject&body=Message";
+    } else {
+        // If desktop, open default email client
+        emailLink.href = "mailto:legendaryoneff@gmail.com";
+    }
+</script>
+
+</body>
+</html>

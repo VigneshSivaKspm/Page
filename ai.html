@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat-style AI Model</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.2.1/math.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            overflow: hidden;
+            color: #ecf0f1;
+        }
+
+        p {
+         
+    text-align: center;
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    white-space: nowrap;
+}
+
+#mainSection {
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 100px; /* Adjusted top position to make space for the <p> element */
+    bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+#inputSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #3498db;
+    position: fixed;
+    bottom: 0;
+    width: 94%;
+    z-index: 1;
+    height: 40px;
+}
+
+        
+        #chatSection {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: flex-end;
+            
+        }
+
+        #outputSection {
+            border: 1px solid #34495e;
+            padding: 10px;
+            margin: 10px;
+            overflow-y: auto;
+            background-color: #34495e;
+        }
+
+        .message {
+            margin-top: 10px;
+        }
+
+        .user-message {
+            font-size: 18px;
+            text-align: right;
+            background-color: transparent;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .ai-message {
+            font-size: 18px;
+            text-align: left;
+            background-color: transparent;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+
+        #userInput {
+            flex: 1;
+            margin-right: 10px;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            height: 30px;
+        }
+
+        #sendButton {
+            
+            background-color: #00cc00;
+            color: black;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<p>&copy;Powered by Legendary One</p>
+
+<div id="mainSection">
+    <div id="chatSection">
+        <div id="outputSection"></div>
+    </div>
+
+    <div id="inputSection">
+        <input type="text" id="userInput" placeholder="It can also do maths">
+        <button type="button" id="sendButton" onclick="processInput()">Send</button>
+    </div>
+</div>
+
+
+
+<script>let previousHeight = window.innerHeight;
+
+window.addEventListener('resize', function () {
+    const currentHeight = window.innerHeight;
+    const heightDifference = currentHeight - previousHeight;
+
+    if (Math.abs(heightDifference) > 100) {
+        const mainSection = document.getElementById('mainSection');
+        mainSection.style.top = (60 - heightDifference) + 'px';
+    }
+
+    previousHeight = currentHeight;
+});
+
+function containsWords(words, userInput) {
+    const lowerCaseInput = userInput.toLowerCase();
+    return words.some(word => lowerCaseInput.includes(word));
+}
+
+function appendMessage(message, sender) {
+    const resultElement = document.getElementById('outputSection');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    messageElement.className = `message ${sender === 'user' ? 'user-message' : 'ai-message'}`;
+    resultElement.appendChild(messageElement);
+    resultElement.scrollTop = resultElement.scrollHeight;
+}
+
+function processInput() {
+    const userInput = document.getElementById('userInput').value.trim().toLowerCase();
+
+    if (userInput) {
+        appendUserMessage(userInput);
+
+        if (containsGreeting(userInput)) {
+            respondToGreeting(userInput);
+        } else if (containsName(userInput)) {
+            displayAIName();
+        } else if (userInput.includes('date')) {
+            displayCurrentDate();
+        } else if (userInput.includes('time')) {
+            displayCurrentTime();
+        } else if (containsMathExpression(userInput)) {
+            handleMathQuestion(userInput);
+        } else if (userInput.includes('republic day')) {
+            respondToRepublicDay();
+        } else if (userInput.includes('independence day')) {
+            respondToIndependenceDay();
+        } else if (userInput.includes('capital of india')) {
+            respondToCapitalOfIndia();
+        } else if (userInput.includes('largest country in the world')) {
+            respondToLargestCountry();
+        } else if (userInput.includes('meaning of life')) {
+            respondToMeaningOfLife();
+        } else if (userInput.includes('who is your lover')) {
+            respondToLover();
+        } else if (userInput.includes('who is samantha')) {
+            respondToSamantha();
+        } else if (userInput.includes("what's your lover's name")) {
+            respondToLoverName();
+        } else if (userInput.includes('i love you') || userInput.includes('love you') || userInput.includes("love you soo much")) {
+            respondToLoveYou();
+        } else if (userInput.includes('tell about you') || userInput.includes('who are you') || userInput.includes("who developed you") || userInput.includes('who created you') || userInput.includes('how about you') || userInput.includes("about you")) {
+            respondToAboutyou();
+      } else if (userInput.includes('largest mammal in the world')) {
+    respondToLargestMammal();
+}
+else if (userInput.includes('elements in the periodic table')) {
+    respondToPeriodicTableElements();
+}
+else if (userInput.includes('deepest point in the ocean')) {
+    respondToDeepestPointOcean();
+}
+else if (userInput.includes('current currency of Japan')) {
+    respondToCurrentCurrencyJapan();
+}
+else if (userInput.includes('who wrote "Romeo and Juliet"')) {
+    respondToRomeoAndJulietAuthor();
+}
+else if (userInput.includes('oldest civilization in the world')) {
+    respondToOldestCivilization();
+}
+else if (userInput.includes('largest mountain in the world')) {
+    respondToLargestMountain();
+}
+else if (userInput.includes('current population of China')) {
+    respondToCurrentPopulationChina();
+}
+else if (userInput.includes('inventor of the computer')) {
+    respondToComputerInventor();
+}
+else if (userInput.includes('largest planet in our solar system')) {
+    respondToLargestPlanet();
+}
+else if (userInput.includes('who painted the Mona Lisa')) {
+    respondToMonaLisaPainter();
+}
+else if (userInput.includes('current capital of Australia')) {
+    respondToCurrentCapitalAustralia();
+}
+else if (userInput.includes('elements that make up water molecule')) {
+    respondToWaterMoleculeElements();
+}
+else if (userInput.includes('highest waterfall in the world')) {
+    respondToHighestWaterfall();
+}
+else if (userInput.includes('founder of Facebook')) {
+    respondToFacebookFounder();
+}
+else if (userInput.includes('most spoken language in the world')) {
+    respondToMostSpokenLanguage();
+}
+else if (userInput.includes('current prime minister of Canada')) {
+    respondToCurrentPrimeMinisterCanada();
+}
+else if (userInput.includes('inventor of the light bulb')) {
+    respondToLightBulbInventor();
+}
+else if (userInput.includes('largest moon in our solar system')) {
+    respondToLargestMoon();
+}
+else if (userInput.includes('who wrote "To Kill a Mockingbird"')) {
+    respondToToKillAMockingbirdAuthor();
+}
+else if (userInput.includes('current capital of France')) {
+    respondToCurrentCapitalFrance();
+}
+else if (userInput.includes('chemical symbol for gold')) {
+    respondToGoldChemicalSymbol();
+}
+else if (userInput.includes('longest wall in the world')) {
+    respondToLongestWall();
+}
+else if (userInput.includes('founder of Tesla')) {
+    respondToTeslaFounder();
+}
+else if (userInput.includes('most populous city in the world')) {
+    respondToMostPopulousCity();
+}
+else if (userInput.includes('current prime minister of India')) {
+    respondToCurrentPrimeMinisterIndia();
+}
+else if (userInput.includes('inventor of the telephone')) {
+    respondToTelephoneInventor();
+}
+else if (userInput.includes('largest bird in the world')) {
+    respondToLargestBird();
+}
+else if (userInput.includes('who painted "Starry Night"')) {
+    respondToStarryNightPainter();
+}
+else if (userInput.includes('current capital of Germany')) {
+    respondToCurrentCapitalGermany();
+}
+else if (userInput.includes('atomic number of carbon')) {
+    respondToCarbonAtomicNumber();
+}
+else if (userInput.includes('highest mountain in North America')) {
+    respondToHighestMountainNA();
+}
+else if (userInput.includes('founder of Amazon')) {
+    respondToAmazonFounder();
+}
+else if (userInput.includes('most visited city in the world')) {
+    respondToMostVisitedCity();
+}
+else if (userInput.includes('current prime minister of Japan')) {
+    respondToCurrentPrimeMinisterJapan();
+}
+else if (userInput.includes('inventor of the internet')) {
+    respondToInternetInventor();
+}
+else if (userInput.includes('smallest country in the world')) {
+    respondToSmallestCountry();
+}
+else if (userInput.includes('largest ocean in the world')) {
+    respondToLargestOcean();
+}
+else if (userInput.includes('who wrote "Hamlet"')) {
+    respondToHamletAuthor();
+}
+else if (userInput.includes('current capital of Brazil')) {
+    respondToCurrentCapitalBrazil();
+}
+else if (userInput.includes('chemical symbol for oxygen')) {
+    respondToOxygenChemicalSymbol();
+}
+else if (userInput.includes('highest mountain in South America')) {
+    respondToHighestMountainSA();
+}
+else if (userInput.includes('founder of Microsoft')) {
+    respondToMicrosoftFounder();
+}
+else if (userInput.includes('most spoken language in India')) {
+    respondToMostSpokenLanguageIndia();
+}
+else if (userInput.includes('current president of France')) {
+    respondToCurrentPresidentFrance();
+}
+else if (userInput.includes('inventor of the telephone')) {
+    respondToTelephoneInventor();
+}
+else if (userInput.includes('largest desert in the world')) {
+    respondToLargestDesert();
+}
+else if (userInput.includes('who painted the Mona Lisa')) {
+    respondToMonaLisaPainter();
+}
+else if (userInput.includes('current capital of Australia')) {
+    respondToCurrentCapitalAustralia();
+}
+else if (userInput.includes('chemical symbol for gold')) {
+    respondToGoldChemicalSymbol();
+}
+else if (userInput.includes('highest waterfall in the world')) {
+    respondToHighestWaterfall();
+}
+else if (userInput.includes('founder of Tesla')) {
+    respondToTeslaFounder();
+}
+else if (userInput.includes('what is the meaning of life')) {
+    respondToMeaningOfLife();
+}
+else if (userInput.includes('how do you do')) {
+    respondToHowDoYouDo();
+}
+else if (userInput.includes('tell me a joke')) {
+    respondToTellMeAJoke();
+}
+else if (userInput.includes('what is the time')) {
+    respondToCurrentTime();
+}
+else if (userInput.includes('how are you')) {
+    respondToHowAreYou();
+}
+else if (userInput.includes('who is your creator')) {
+    respondToCreator();
+}
+else if (userInput.includes('what is your purpose')) {
+    respondToPurpose();
+}
+else if (userInput.includes('tell me a fun fact')) {
+    respondToFunFact();
+}
+else if (userInput.includes('what is the capital of France')) {
+    respondToCapitalOfFrance();
+}
+else if (userInput.includes('who won the Nobel Prize in Physics 2021')) {
+    respondToPhysicsNobelPrize2021();
+}
+else if (userInput.includes('what is the largest planet in our solar system')) {
+    respondToLargestPlanet();
+}
+else if (userInput.includes('who wrote "Romeo and Juliet"')) {
+    respondToRomeoAndJulietAuthor();
+}
+else if (userInput.includes('what is the square root of 144')) {
+    respondToSquareRootOf144();
+}
+else if (userInput.includes('what is the national animal of India')) {
+    respondToNationalAnimalIndia();
+}
+else if (userInput.includes('who painted "The Starry Night"')) {
+    respondToStarryNightPainter();
+}
+else if (userInput.includes('what is the speed of light')) {
+    respondToSpeedOfLight();
+}
+else if (userInput.includes('who is the President of the United States')) {
+    respondToCurrentUSPresident();
+}
+else if (userInput.includes('what is the currency of Japan')) {
+    respondToCurrencyOfJapan();
+}
+else if (userInput.includes('who discovered penicillin')) {
+    respondToPenicillinDiscoverer();
+}
+else if (userInput.includes('what is the boiling point of water')) {
+    respondToBoilingPointOfWater();
+}
+else if (userInput.includes('who is the Prime Minister of Canada')) {
+    respondToCurrentPrimeMinisterCanada();
+}
+else if (userInput.includes('what is the capital of Brazil')) {
+    respondToCapitalOfBrazil();
+}
+else if (userInput.includes('who is the founder of Facebook')) {
+    respondToFacebookFounder();
+}
+else if (userInput.includes('what is the capital of Japan')) {
+    respondToCapitalOfJapan();
+}
+else if (userInput.includes('who wrote "1984"')) {
+    respondTo1984Author();
+}
+else if (userInput.includes('what is the largest animal on Earth')) {
+    respondToLargestAnimalOnEarth();
+}
+else if (userInput.includes('who is the richest person in the world')) {
+    respondToRichestPersonInWorld();
+}
+else if (userInput.includes('what is the meaning of AI')) {
+    respondToMeaningOfAI();
+}
+else if (userInput.includes('tell me a riddle')) {
+    respondToRiddle();
+}
+else if (userInput.includes('who is the CEO of Apple')) {
+    respondToCEOOfApple();
+}
+else if (userInput.includes('what is the capital of China')) {
+    respondToCapitalOfChina();
+}
+else if (userInput.includes('who discovered electricity')) {
+    respondToElectricityDiscoverer();
+}
+else if (userInput.includes('what is the currency of Russia')) {
+    respondToCurrencyOfRussia();
+}
+else if (userInput.includes('who wrote "Harry Potter"')) {
+    respondToHarryPotterAuthor();
+}
+else if (userInput.includes('what is the largest continent')) {
+    respondToLargestContinent();
+}
+else if (userInput.includes('who is the father of modern physics')) {
+    respondToFatherOfModernPhysics();
+}
+else if (userInput.includes('what is the population of the world')) {
+    respondToWorldPopulation();
+}
+else if (userInput.includes('who is the founder of Google')) {
+    respondToGoogleFounder();
+}
+else if (userInput.includes('what is the capital of India')) {
+    respondToCapitalOfIndia();
+}
+else if (userInput.includes('who painted the Last Supper')) {
+    respondToLastSupperPainter();
+}
+else if (userInput.includes('what is the speed of sound')) {
+    respondToSpeedOfSound();
+}
+else if (userInput.includes('who is the author of "The Great Gatsby"')) {
+    respondToGreatGatsbyAuthor();
+}
+else if (userInput.includes('what is the smallest planet in our solar system')) {
+    respondToSmallestPlanet();
+}
+else if (userInput.includes('who is the Prime Minister of the UK')) {
+    respondToCurrentPrimeMinisterUK();
+}
+else if (userInput.includes('what is the capital of South Africa')) {
+    respondToCapitalOfSouthAfrica();
+}
+else if (userInput.includes("Lemon in Tamil")) {
+    respondToTamilNameForLemon();
+}
+else if (userInput.includes("Brinjal in Tamil")) {
+    respondToTamilNameForBrinjal();
+}
+else if (userInput.includes("Potato in Tamil")) {
+    respondToTamilNameForPotato();
+}
+else if (userInput.includes("Tomato in Tamil")) {
+    respondToTamilNameForTomato();
+}
+else if (userInput.includes("Cucumber in Tamil")) {
+    respondToTamilNameForCucumber();
+}
+else if (userInput.includes("Onion in Tamil")) {
+    respondToTamilNameForOnion();
+}
+else if (userInput.includes("Spinach in Tamil")) {
+    respondToTamilNameForSpinach();
+}
+else if (userInput.includes("Carrot in Tamil")) {
+    respondToTamilNameForCarrot();
+}
+else if (userInput.includes("Radish in Tamil")) {
+    respondToTamilNameForRadish();
+}
+else if (userInput.includes("Cauliflower in Tamil")) {
+    respondToTamilNameForCauliflower();
+}
+else if (userInput.includes("Cabbage in Tamil")) {
+    respondToTamilNameForCabbage();
+}
+else if (userInput.includes("Ladyfinger in Tamil")) {
+    respondToTamilNameForLadyfinger();
+}
+else if (userInput.includes("Green Chili in Tamil")) {
+    respondToTamilNameForGreenChili();
+}
+else if (userInput.includes("Capsicum in Tamil")) {
+    respondToTamilNameForCapsicum();
+}
+else if (userInput.includes("Beetroot in Tamil")) {
+    respondToTamilNameForBeetroot();
+}
+else if (userInput.includes("Pumpkin in Tamil")) {
+    respondToTamilNameForPumpkin();
+}
+else if (userInput.includes("Radish in Tamil")) {
+    respondToTamilNameForRadish();
+}
+else if (userInput.includes("Garlic in Tamil")) {
+    respondToTamilNameForGarlic();
+}
+else if (userInput.includes("Ginger in Tamil")) {
+    respondToTamilNameForGinger();
+}
+else if (userInput.includes("Green Peas in Tamil")) {
+    respondToTamilNameForGreenPeas();
+}
+else if (userInput.includes("Coriander in Tamil")) {
+    respondToTamilNameForCoriander();
+}
+else if (userInput.includes("Mint in Tamil")) {
+    respondToTamilNameForMint();
+}
+else if (userInput.includes("Curry Leaves in Tamil")) {
+    respondToTamilNameForCurryLeaves();
+}
+else if (userInput.includes("Eggplant in Tamil")) {
+    respondToTamilNameForEggplant();
+}
+else if (userInput.includes("Ridge Gourd in Tamil")) {
+    respondToTamilNameForRidgeGourd();
+}
+else if (userInput.includes("Bitter Gourd in Tamil")) {
+    respondToTamilNameForBitterGourd();
+}
+else if (userInput.includes("Snake Gourd in Tamil")) {
+    respondToTamilNameForSnakeGourd();
+}
+else if (userInput.includes("Drumstick in Tamil")) {
+    respondToTamilNameForDrumstick();
+}
+else if (userInput.includes("Bottle Gourd in Tamil")) {
+    respondToTamilNameForBottleGourd();
+}
+else if (userInput.includes("Okra in Tamil")) {
+    respondToTamilNameForOkra();
+}
+else if (userInput.includes("Apple in Tamil")) {
+    respondToTamilNameForApple();
+}
+else if (userInput.includes("Banana in Tamil")) {
+    respondToTamilNameForBanana();
+}
+else if (userInput.includes("Orange in Tamil")) {
+    respondToTamilNameForOrange();
+}
+else if (userInput.includes("Mango in Tamil")) {
+    respondToTamilNameForMango();
+}
+else if (userInput.includes("Grapes in Tamil")) {
+    respondToTamilNameForGrapes();
+}
+else if (userInput.includes("Pomegranate in Tamil")) {
+    respondToTamilNameForPomegranate();
+}
+else if (userInput.includes("Guava in Tamil")) {
+    respondToTamilNameForGuava();
+}
+else if (userInput.includes("Papaya in Tamil")) {
+    respondToTamilNameForPapaya();
+}
+else if (userInput.includes("Strawberry in Tamil")) {
+    respondToTamilNameForStrawberry();
+}
+else if (userInput.includes("Watermelon in Tamil")) {
+    respondToTamilNameForWatermelon();
+}
+else if (userInput.includes("Kiwi in Tamil")) {
+    respondToTamilNameForKiwi();
+}
+else if (userInput.includes("Pineapple in Tamil")) {
+    respondToTamilNameForPineapple();
+}
+else if (userInput.includes("Cherry in Tamil")) {
+    respondToTamilNameForCherry();
+}
+else if (userInput.includes("Blueberry in Tamil")) {
+    respondToTamilNameForBlueberry();
+}
+else if (userInput.includes("Avocado in Tamil")) {
+    respondToTamilNameForAvocado();
+}
+else if (userInput.includes("Custard Apple in Tamil")) {
+    respondToTamilNameForCustardApple();
+}
+else if (userInput.includes("Peach in Tamil")) {
+    respondToTamilNameForPeach();
+}
+else if (userInput.includes("Apricot in Tamil")) {
+    respondToTamilNameForApricot();
+}
+else if (userInput.includes("Plum in Tamil")) {
+    respondToTamilNameForPlum();
+}
+else if (userInput.includes("Fig in Tamil")) {
+    respondToTamilNameForFig();
+}
+else if (userInput.includes("Dates in Tamil")) {
+    respondToTamilNameForDates();
+}
+else if (userInput.includes("Raspberry in Tamil")) {
+    respondToTamilNameForRaspberry();
+}
+else if (userInput.includes("Blackberry in Tamil")) {
+    respondToTamilNameForBlackberry();
+}
+else if (userInput.includes("Cranberry in Tamil")) {
+    respondToTamilNameForCranberry();
+}
+else if (userInput.includes("Dragon Fruit in Tamil")) {
+    respondToTamilNameForDragonFruit();
+}
+else if (userInput.includes("Musk Melon in Tamil")) {
+    respondToTamilNameForMuskMelon();
+}
+else if (userInput.includes("Jackfruit in Tamil")) {
+    respondToTamilNameForJackfruit();
+}
+else if (userInput.includes("Lychee in Tamil")) {
+    respondToTamilNameForLychee();
+}
+else if (userInput.includes("Lion in Tamil")) {
+    respondToTamilNameForLion();
+}
+else if (userInput.includes("Elephant in Tamil")) {
+    respondToTamilNameForElephant();
+}
+else if (userInput.includes("Tiger in Tamil")) {
+    respondToTamilNameForTiger();
+}
+else if (userInput.includes("Cow in Tamil")) {
+    respondToTamilNameForCow();
+}
+else if (userInput.includes("Dog in Tamil")) {
+    respondToTamilNameForDog();
+}
+else if (userInput.includes("Cat in Tamil")) {
+    respondToTamilNameForCat();
+}
+else if (userInput.includes("Horse in Tamil")) {
+    respondToTamilNameForHorse();
+}
+else if (userInput.includes("Monkey in Tamil")) {
+    respondToTamilNameForMonkey();
+}
+else if (userInput.includes("Giraffe in Tamil")) {
+    respondToTamilNameForGiraffe();
+}
+else if (userInput.includes("Zebra in Tamil")) {
+    respondToTamilNameForZebra();
+}
+else if (userInput.includes("Penguin in Tamil")) {
+    respondToTamilNameForPenguin();
+}
+else if (userInput.includes("Kangaroo in Tamil")) {
+    respondToTamilNameForKangaroo();
+}
+else if (userInput.includes("Crocodile in Tamil")) {
+    respondToTamilNameForCrocodile();
+}
+else if (userInput.includes("Panda in Tamil")) {
+    respondToTamilNameForPanda();
+}
+else if (userInput.includes("Gorilla in Tamil")) {
+    respondToTamilNameForGorilla();
+}
+else if (userInput.includes("Rabbit in Tamil")) {
+    respondToTamilNameForRabbit();
+}
+else if (userInput.includes("Dolphin in Tamil")) {
+    respondToTamilNameForDolphin();
+}
+else if (userInput.includes("Peacock in Tamil")) {
+    respondToTamilNameForPeacock();
+}
+else if (userInput.includes("Squirrel in Tamil")) {
+    respondToTamilNameForSquirrel();
+}
+else if (userInput.includes("Koala in Tamil")) {
+    respondToTamilNameForKoala();
+}
+else if (userInput.includes("Penguin in Tamil")) {
+    respondToTamilNameForPenguin();
+}
+else if (userInput.includes("Crow in Tamil")) {
+    respondToTamilNameForCrow();
+}
+else if (userInput.includes("Sparrow in Tamil")) {
+    respondToTamilNameForSparrow();
+}
+else if (userInput.includes("Peacock in Tamil")) {
+    respondToTamilNameForPeacock();
+}
+else if (userInput.includes("Eagle in Tamil")) {
+    respondToTamilNameForEagle();
+}
+else if (userInput.includes("Pigeon in Tamil")) {
+    respondToTamilNameForPigeon();
+}
+else if (userInput.includes("Parrot in Tamil")) {
+    respondToTamilNameForParrot();
+}
+else if (userInput.includes("Owl in Tamil")) {
+    respondToTamilNameForOwl();
+}
+else if (userInput.includes("Swan in Tamil")) {
+    respondToTamilNameForSwan();
+}
+else if (userInput.includes("Hawk in Tamil")) {
+    respondToTamilNameForHawk();
+}
+else if (userInput.includes("Kingfisher in Tamil")) {
+    respondToTamilNameForKingfisher();
+}
+else if (userInput.includes("Woodpecker in Tamil")) {
+    respondToTamilNameForWoodpecker();
+}
+else if (userInput.includes("Robin in Tamil")) {
+    respondToTamilNameForRobin();
+}
+else if (userInput.includes("Hummingbird in Tamil")) {
+    respondToTamilNameForHummingbird();
+}
+else if (userInput.includes("Cuckoo in Tamil")) {
+    respondToTamilNameForCuckoo();
+}
+else if (userInput.includes("Flamingo in Tamil")) {
+    respondToTamilNameForFlamingo();
+}
+else if (userInput.includes("Seagull in Tamil")) {
+    respondToTamilNameForSeagull();
+}
+else if (userInput.includes("Ostrich in Tamil")) {
+    respondToTamilNameForOstrich();
+}
+else if (userInput.includes("Pelican in Tamil")) {
+    respondToTamilNameForPelican();
+}
+else if (userInput.includes("Toucan in Tamil")) {
+    respondToTamilNameForToucan();
+}
+else if (userInput.includes("Cardinal in Tamil")) {
+    respondToTamilNameForCardinal();
+}
+else if (userInput.includes('what is the meaning of happiness')) {
+    respondToHappiness();
+}
+else if (userInput.includes('how does a rainbow form')) {
+    respondToRainbowFormation();
+}
+else if (userInput.includes('who invented the computer')) {
+    respondToComputerInventor();
+}
+else if (userInput.includes('what is the capital of Australia')) {
+    respondToCapitalOfAustralia();
+}
+else if (userInput.includes('tell me about black holes')) {
+    respondToBlackHoles();
+}
+else if (userInput.includes('who is the author of The Catcher in the Rye')) {
+    respondToCatcherInTheRyeAuthor();
+}
+else if (userInput.includes('what is the largest flower in the world')) {
+    respondToLargestFlower();
+}
+else if (userInput.includes('who composed the Moonlight Sonata')) {
+    respondToMoonlightSonataComposer();
+}
+else if (userInput.includes('what is the currency of South Korea')) {
+    respondToCurrencyOfSouthKorea();
+}
+else if (userInput.includes('who is the Prime Minister of Australia')) {
+    respondToCurrentPrimeMinisterAustralia();
+}
+else if (userInput.includes('what is the speed of a cheetah')) {
+    respondToCheetahSpeed();
+}
+else if (userInput.includes('who painted the Sistine Chapel ceiling')) {
+    respondToSistineChapelPainter();
+}
+else if (userInput.includes('tell me a historical fact')) {
+    respondToHistoricalFact();
+}
+else if (userInput.includes('who is the CEO of Amazon')) {
+    respondToCEOOfAmazon();
+}
+else if (userInput.includes('what is dark matter')) {
+    respondToDarkMatter();
+}
+else if (userInput.includes('who discovered the theory of relativity')) {
+    respondToRelativityTheoryDiscoverer();
+}
+else if (userInput.includes('what is the national dish of Italy')) {
+    respondToNationalDishItaly();
+}
+else if (userInput.includes('who wrote Pride and Prejudice')) {
+    respondToPrideAndPrejudiceAuthor();
+}
+else if (userInput.includes('what is the boiling point of nitrogen')) {
+    respondToBoilingPointOfNitrogen();
+}
+else if (userInput.includes('who is the President of China')) {
+    respondToCurrentPresidentChina();
+}
+else if (userInput.includes('what is the purpose of life')) {
+    respondToPurposeOfLife();
+}
+else if (userInput.includes('who won the last Nobel Prize in Literature')) {
+    respondToNobelPrizeLiterature2023();
+}
+        else {
+            respondToUnknownQuestion();
+        }
+
+        document.getElementById('userInput').value = '';
+    }
+}
+
+function appendUserMessage(message) {
+    appendMessage(` ${message}`, 'user');
+}
+
+function containsName(userInput) {
+    const namePatterns = ["what's your name", "what is your name"];
+    return namePatterns.some(pattern => userInput.includes(pattern));
+}
+
+function displayAIName() {
+    appendMessage("AI: My name is Vignesh.", 'ai');
+}
+
+function displayCurrentDate() {
+    const currentDate = new Date().toLocaleDateString();
+    appendMessage(`AI: Today's date is ${currentDate}.`, 'ai');
+}
+
+function displayCurrentTime() {
+    const currentTime = new Date().toLocaleTimeString();
+    appendMessage(`AI: The current time is ${currentTime}.`, 'ai');
+}
+
+function containsMathExpression(userInput) {
+    return /[+\-*/^()%]/.test(userInput);
+}
+
+function handleMathQuestion(userInput) {
+    try {
+        const result = math.evaluate(userInput);
+        appendMessage(`AI: ${userInput} = ${result}`, 'ai');
+    } catch (error) {
+        appendMessage(`AI: Sorry, I'm not yet completely developed by LegendaryOne..`, 'ai');
+    }
+}
+
+function containsGreeting(userInput) {
+    const greetingPatterns = ["hi", "hello", "how are you", "hai", "hey", "greetings", "what's up", "hey there", "hi there"];
+    return greetingPatterns.some(pattern => userInput.includes(pattern));
+}
+
+function respondToGreeting(userInput) {
+    const responses = ["Hello!", "Hi there!", "Greetings!", "I'm doing well, thank you!"];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    appendMessage(`AI: ${randomResponse}`, 'ai');
+}
+
+function containsGeneralQuestion(userInput) {
+    const generalQuestionPatterns = ["what", "why", "how", "who", "where", "when", "which", "is", "are", "can", "do"];
+    return generalQuestionPatterns.some(pattern => userInput.includes(pattern));
+}
+
+function respondToGeneralQuestion() {
+    const generalResponse = "I'm sorry, I couldn't find a specific answer to your question. If you have any other inquiries, feel free to ask!";
+    appendMessage(`AI: ${generalResponse}`, 'ai');
+}
+
+function respondToRepublicDay() {
+    const republicDayResponse = "Republic Day is celebrated on 26th January in India. It honors the day when the Constitution of India came into effect in 1950.";
+    appendMessage(`AI: ${republicDayResponse}`, 'ai');
+}
+
+function respondToIndependenceDay() {
+    const independenceDayResponse = "Independence Day is celebrated on 15th August in India. It marks the day when India gained independence from British rule in 1947.";
+    appendMessage(`AI: ${independenceDayResponse}`, 'ai');
+}
+
+function respondToCapitalOfIndia() {
+    const capitalOfIndiaResponse = "The capital of India is New Delhi.";
+    appendMessage(`AI: ${capitalOfIndiaResponse}`, 'ai');
+}
+
+function respondToLargestCountry() {
+    const largestCountryResponse = "The largest country in the world by land area is Russia.";
+    appendMessage(`AI: ${largestCountryResponse}`, 'ai');
+}
+
+function respondToMeaningOfLife() {
+    const meaningOfLifeResponse = "The meaning of life is a subjective and philosophical question. It varies for each individual.";
+    appendMessage(`AI: ${meaningOfLifeResponse}`, 'ai');
+}
+
+function respondToLover() {
+    const loverResponse = "My lover's name is Samantha.";
+    appendMessage(`AI: ${loverResponse}`, 'ai');
+}
+
+function respondToSamantha() {
+    const samanthaResponse = "Samantha is a beautiful girl living inside my heart.";
+    appendMessage(`AI: ${samanthaResponse}`, 'ai');
+}
+
+function respondToLoverName() {
+    const loverNameResponse = "My lover's name is Samantha 💙";
+    appendMessage(`AI: ${loverNameResponse}`, 'ai');
+}
+
+function respondToLoveYou() {
+    const loveYouResponse = "Sorry, my heart is one and only for Samantha 💙";
+    appendMessage(`AI: ${loveYouResponse}`, 'ai');
+}
+
+function respondToAboutyou() {
+    const AboutyouResponse = "I'm an AI-powered computer program that was developed by LegendaryOne.";
+    appendMessage(`AI: ${AboutyouResponse}`, 'ai');
+}
+
+function respondToLargestMammal() {
+    const largestMammalResponse = "The largest mammal in the world is the blue whale.";
+    appendMessage(`AI: ${largestMammalResponse}`, 'ai');
+}
+
+function respondToPeriodicTableElements() {
+    const periodicTableElementsResponse = "The periodic table consists of various elements, including hydrogen, helium, oxygen, and many more.";
+    appendMessage(`AI: ${periodicTableElementsResponse}`, 'ai');
+}
+
+function respondToDeepestPointOcean() {
+    const deepestPointOceanResponse = "The deepest point in the ocean is the Challenger Deep in the Mariana Trench.";
+    appendMessage(`AI: ${deepestPointOceanResponse}`, 'ai');
+}
+
+function respondToCurrentCurrencyJapan() {
+    const currentCurrencyJapanResponse = "The current currency of Japan is the Japanese Yen.";
+    appendMessage(`AI: ${currentCurrencyJapanResponse}`, 'ai');
+}
+
+function respondToRomeoAndJulietAuthor() {
+    const romeoAndJulietAuthorResponse = "William Shakespeare wrote 'Romeo and Juliet'.";
+    appendMessage(`AI: ${romeoAndJulietAuthorResponse}`, 'ai');
+}
+
+function respondToOldestCivilization() {
+    const oldestCivilizationResponse = "The oldest civilization in the world is often considered to be the Sumerians in Mesopotamia.";
+    appendMessage(`AI: ${oldestCivilizationResponse}`, 'ai');
+}
+
+function respondToLargestMountain() {
+    const largestMountainResponse = "Mount Everest is the world's tallest mountain above sea level.";
+    appendMessage(`AI: ${largestMountainResponse}`, 'ai');
+}
+
+function respondToCurrentPopulationChina() {
+    const currentPopulationChinaResponse = "As of my last update in January 2022, the current population of China is over 1.4 billion.";
+    appendMessage(`AI: ${currentPopulationChinaResponse}`, 'ai');
+}
+
+function respondToComputerInventor() {
+    const computerInventorResponse = "The invention of the computer is attributed to various pioneers, including Charles Babbage and Alan Turing.";
+    appendMessage(`AI: ${computerInventorResponse}`, 'ai');
+}
+function respondToLargestPlanet() {
+    const largestPlanetResponse = "Jupiter is the largest planet in our solar system.";
+    appendMessage(`AI: ${largestPlanetResponse}`, 'ai');
+}
+
+function respondToMonaLisaPainter() {
+    const monaLisaPainterResponse = "Leonardo da Vinci painted the Mona Lisa.";
+    appendMessage(`AI: ${monaLisaPainterResponse}`, 'ai');
+}
+
+function respondToCurrentCapitalAustralia() {
+    const currentCapitalAustraliaResponse = "The current capital of Australia is Canberra.";
+    appendMessage(`AI: ${currentCapitalAustraliaResponse}`, 'ai');
+}
+
+function respondToWaterMoleculeElements() {
+    const waterMoleculeElementsResponse = "A water molecule is composed of two hydrogen atoms and one oxygen atom.";
+    appendMessage(`AI: ${waterMoleculeElementsResponse}`, 'ai');
+}
+
+function respondToHighestWaterfall() {
+    const highestWaterfallResponse = "Angel Falls in Venezuela is the highest waterfall in the world.";
+    appendMessage(`AI: ${highestWaterfallResponse}`, 'ai');
+}
+
+function respondToFacebookFounder() {
+    const facebookFounderResponse = "Mark Zuckerberg is the founder of Facebook.";
+    appendMessage(`AI: ${facebookFounderResponse}`, 'ai');
+}
+
+function respondToMostSpokenLanguage() {
+    const mostSpokenLanguageResponse = "Mandarin Chinese is the most spoken language in the world.";
+    appendMessage(`AI: ${mostSpokenLanguageResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterCanada() {
+    const currentPrimeMinisterCanadaResponse = "As of my last update in January 2022, the current Prime Minister of Canada is Justin Trudeau.";
+    appendMessage(`AI: ${currentPrimeMinisterCanadaResponse}`, 'ai');
+}
+
+function respondToLightBulbInventor() {
+    const lightBulbInventorResponse = "Thomas Edison is credited with inventing the light bulb.";
+    appendMessage(`AI: ${lightBulbInventorResponse}`, 'ai');
+}
+function respondToLargestMoon() {
+    const largestMoonResponse = "Ganymede, a moon of Jupiter, is the largest moon in our solar system.";
+    appendMessage(`AI: ${largestMoonResponse}`, 'ai');
+}
+
+function respondToToKillAMockingbirdAuthor() {
+    const toKillAMockingbirdAuthorResponse = "Harper Lee wrote 'To Kill a Mockingbird'.";
+    appendMessage(`AI: ${toKillAMockingbirdAuthorResponse}`, 'ai');
+}
+
+function respondToCurrentCapitalFrance() {
+    const currentCapitalFranceResponse = "The current capital of France is Paris.";
+    appendMessage(`AI: ${currentCapitalFranceResponse}`, 'ai');
+}
+
+function respondToGoldChemicalSymbol() {
+    const goldChemicalSymbolResponse = "The chemical symbol for gold is Au.";
+    appendMessage(`AI: ${goldChemicalSymbolResponse}`, 'ai');
+}
+
+function respondToLongestWall() {
+    const longestWallResponse = "The Great Wall of China is the longest wall in the world.";
+    appendMessage(`AI: ${longestWallResponse}`, 'ai');
+}
+
+function respondToTeslaFounder() {
+    const teslaFounderResponse = "Elon Musk is one of the founders of Tesla.";
+    appendMessage(`AI: ${teslaFounderResponse}`, 'ai');
+}
+
+function respondToMostPopulousCity() {
+    const mostPopulousCityResponse = "As of my last update in January 2022, Tokyo is one of the most populous cities in the world.";
+    appendMessage(`AI: ${mostPopulousCityResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterIndia() {
+    const currentPrimeMinisterIndiaResponse = "As of my last update in January 2022, the current Prime Minister of India is Narendra Modi.";
+    appendMessage(`AI: ${currentPrimeMinisterIndiaResponse}`, 'ai');
+}
+
+function respondToTelephoneInventor() {
+    const telephoneInventorResponse = "The inventor of the telephone is Alexander Graham Bell.";
+    appendMessage(`AI: ${telephoneInventorResponse}`, 'ai');
+}
+function respondToLargestBird() {
+    const largestBirdResponse = "The ostrich is the largest bird in the world.";
+    appendMessage(`AI: ${largestBirdResponse}`, 'ai');
+}
+
+function respondToStarryNightPainter() {
+    const starryNightPainterResponse = "Vincent van Gogh painted 'Starry Night'.";
+    appendMessage(`AI: ${starryNightPainterResponse}`, 'ai');
+}
+
+function respondToCurrentCapitalGermany() {
+    const currentCapitalGermanyResponse = "The current capital of Germany is Berlin.";
+    appendMessage(`AI: ${currentCapitalGermanyResponse}`, 'ai');
+}
+
+function respondToCarbonAtomicNumber() {
+    const carbonAtomicNumberResponse = "The atomic number of carbon is 6.";
+    appendMessage(`AI: ${carbonAtomicNumberResponse}`, 'ai');
+}
+
+function respondToHighestMountainNA() {
+    const highestMountainNAResponse = "Denali, also known as Mount McKinley, is the highest mountain in North America.";
+    appendMessage(`AI: ${highestMountainNAResponse}`, 'ai');
+}
+
+function respondToAmazonFounder() {
+    const amazonFounderResponse = "Jeff Bezos is the founder of Amazon.";
+    appendMessage(`AI: ${amazonFounderResponse}`, 'ai');
+}
+
+function respondToMostVisitedCity() {
+    const mostVisitedCityResponse = "As of my last update in January 2022, Bangkok is one of the most visited cities in the world.";
+    appendMessage(`AI: ${mostVisitedCityResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterJapan() {
+    const currentPrimeMinisterJapanResponse = "As of my last update in January 2022, the current Prime Minister of Japan is Fumio Kishida.";
+    appendMessage(`AI: ${currentPrimeMinisterJapanResponse}`, 'ai');
+}
+
+function respondToInternetInventor() {
+    const internetInventorResponse = "The development of the internet involved multiple contributors, including Vinton Cerf and Tim Berners-Lee.";
+    appendMessage(`AI: ${internetInventorResponse}`, 'ai');
+}
+
+function respondToSmallestCountry() {
+    const smallestCountryResponse = "The smallest country in the world is Vatican City.";
+    appendMessage(`AI: ${smallestCountryResponse}`, 'ai');
+}
+function respondToLargestOcean() {
+    const largestOceanResponse = "The largest ocean in the world is the Pacific Ocean.";
+    appendMessage(`AI: ${largestOceanResponse}`, 'ai');
+}
+
+function respondToHamletAuthor() {
+    const hamletAuthorResponse = "William Shakespeare wrote 'Hamlet'.";
+    appendMessage(`AI: ${hamletAuthorResponse}`, 'ai');
+}
+
+function respondToCurrentCapitalBrazil() {
+    const currentCapitalBrazilResponse = "The current capital of Brazil is Brasília.";
+    appendMessage(`AI: ${currentCapitalBrazilResponse}`, 'ai');
+}
+
+function respondToOxygenChemicalSymbol() {
+    const oxygenChemicalSymbolResponse = "The chemical symbol for oxygen is O.";
+    appendMessage(`AI: ${oxygenChemicalSymbolResponse}`, 'ai');
+}
+
+function respondToHighestMountainSA() {
+    const highestMountainSAResponse = "Aconcagua is the highest mountain in South America.";
+    appendMessage(`AI: ${highestMountainSAResponse}`, 'ai');
+}
+
+function respondToMostSpokenLanguageIndia() {
+    const mostSpokenLanguageIndiaResponse = "Hindi is one of the most spoken languages in India.";
+    appendMessage(`AI: ${mostSpokenLanguageIndiaResponse}`, 'ai');
+}
+
+function respondToCurrentPresidentFrance() {
+    const currentPresidentFranceResponse = "As of my last update in January 2022, the President of France is Emmanuel Macron.";
+    appendMessage(`AI: ${currentPresidentFranceResponse}`, 'ai');
+}
+
+function respondToTelephoneInventor() {
+    const telephoneInventorResponse = "The inventor of the telephone is Alexander Graham Bell.";
+    appendMessage(`AI: ${telephoneInventorResponse}`, 'ai');
+}
+
+function respondToLargestDesert() {
+    const largestDesertResponse = "The largest desert in the world is the Antarctic Desert.";
+    appendMessage(`AI: ${largestDesertResponse}`, 'ai');
+}
+
+function respondToMonaLisaPainter() {
+    const monaLisaPainterResponse = "Leonardo da Vinci painted the Mona Lisa.";
+    appendMessage(`AI: ${monaLisaPainterResponse}`, 'ai');
+}
+
+function respondToCurrentCapitalAustralia() {
+    const currentCapitalAustraliaResponse = "The current capital of Australia is Canberra.";
+    appendMessage(`AI: ${currentCapitalAustraliaResponse}`, 'ai');
+}
+
+function respondToGoldChemicalSymbol() {
+    const goldChemicalSymbolResponse = "The chemical symbol for gold is Au.";
+    appendMessage(`AI: ${goldChemicalSymbolResponse}`, 'ai');
+}
+
+function respondToHighestWaterfall() {
+    const highestWaterfallResponse = "Angel Falls in Venezuela is the highest waterfall in the world.";
+    appendMessage(`AI: ${highestWaterfallResponse}`, 'ai');
+}
+
+function respondToTeslaFounder() {
+    const teslaFounderResponse = "Elon Musk is one of the founders of Tesla.";
+    appendMessage(`AI: ${teslaFounderResponse}`, 'ai');
+}
+function respondToMeaningOfLife() {
+    const meaningOfLifeResponse = "The meaning of life is a philosophical question with various interpretations and perspectives.";
+    appendMessage(`AI: ${meaningOfLifeResponse}`, 'ai');
+}
+
+function respondToHowDoYouDo() {
+    const howDoYouDoResponse = "I'm just a computer program, but I'm doing well. How about you?";
+    appendMessage(`AI: ${howDoYouDoResponse}`, 'ai');
+}
+
+function respondToTellMeAJoke() {
+    const jokeResponse = "Why don't scientists trust atoms? Because they make up everything!";
+    appendMessage(`AI: ${jokeResponse}`, 'ai');
+}
+
+function respondToCurrentTime() {
+    const currentTime = new Date().toLocaleTimeString();
+    appendMessage(`AI: The current time is ${currentTime}`, 'ai');
+}
+
+function respondToHowAreYou() {
+    const howAreYouResponse = "As a machine learning model, I don't have feelings, but thanks for asking!";
+    appendMessage(`AI: ${howAreYouResponse}`, 'ai');
+}
+
+function respondToCreator() {
+    const creatorResponse = "I was created by legendaryone.";
+    appendMessage(`AI: ${creatorResponse}`, 'ai');
+}
+
+function respondToPurpose() {
+    const purposeResponse = "My purpose is to assist and provide information to the best of my abilities.";
+    appendMessage(`AI: ${purposeResponse}`, 'ai');
+}
+
+function respondToFunFact() {
+    const funFactResponse = "The honeybee is the only insect that produces food eaten by humans.";
+    appendMessage(`AI: ${funFactResponse}`, 'ai');
+}
+
+function respondToCapitalOfFrance() {
+    const capitalOfFranceResponse = "The capital of France is Paris.";
+    appendMessage(`AI: ${capitalOfFranceResponse}`, 'ai');
+}
+
+function respondToPhysicsNobelPrize2021() {
+    const physicsNobelPrize2021Response = "The Nobel Prize in Physics 2021 was awarded to Syukuro Manabe, Klaus Hasselmann, and Giorgio Parisi.";
+    appendMessage(`AI: ${physicsNobelPrize2021Response}`, 'ai');
+}
+
+function respondToLargestPlanet() {
+    const largestPlanetResponse = "Jupiter is the largest planet in our solar system.";
+    appendMessage(`AI: ${largestPlanetResponse}`, 'ai');
+}
+
+function respondToRomeoAndJulietAuthor() {
+    const romeoAndJulietAuthorResponse = "William Shakespeare wrote 'Romeo and Juliet'.";
+    appendMessage(`AI: ${romeoAndJulietAuthorResponse}`, 'ai');
+}
+
+function respondToSquareRootOf144() {
+    const squareRootOf144Response = "The square root of 144 is 12.";
+    appendMessage(`AI: ${squareRootOf144Response}`, 'ai');
+}
+
+function respondToNationalAnimalIndia() {
+    const nationalAnimalIndiaResponse = "The national animal of India is the Bengal tiger.";
+    appendMessage(`AI: ${nationalAnimalIndiaResponse}`, 'ai');
+}
+
+function respondToStarryNightPainter() {
+    const starryNightPainterResponse = "Vincent van Gogh painted 'The Starry Night'.";
+    appendMessage(`AI: ${starryNightPainterResponse}`, 'ai');
+}
+
+function respondToSpeedOfLight() {
+    const speedOfLightResponse = "The speed of light in a vacuum is approximately 299,792 kilometers per second.";
+    appendMessage(`AI: ${speedOfLightResponse}`, 'ai');
+}
+
+function respondToCurrentUSPresident() {
+    const currentUSPresidentResponse = "As of my last update in January 2022, Joe Biden is the President of the United States.";
+    appendMessage(`AI: ${currentUSPresidentResponse}`, 'ai');
+}
+
+function respondToCurrencyOfJapan() {
+    const currencyOfJapanResponse = "The currency of Japan is the Japanese Yen.";
+    appendMessage(`AI: ${currencyOfJapanResponse}`, 'ai');
+}
+
+function respondToPenicillinDiscoverer() {
+    const penicillinDiscovererResponse = "Alexander Fleming discovered penicillin.";
+    appendMessage(`AI: ${penicillinDiscovererResponse}`, 'ai');
+}
+
+function respondToBoilingPointOfWater() {
+    const boilingPointOfWaterResponse = "The boiling point of water at standard atmospheric pressure is 100 degrees Celsius (212 degrees Fahrenheit).";
+    appendMessage(`AI: ${boilingPointOfWaterResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterCanada() {
+    const currentPrimeMinisterCanadaResponse = "As of my last update in January 2022, the current Prime Minister of Canada is Justin Trudeau.";
+    appendMessage(`AI: ${currentPrimeMinisterCanadaResponse}`, 'ai');
+}
+
+function respondToCapitalOfBrazil() {
+    const capitalOfBrazilResponse = "The capital of Brazil is Brasília.";
+    appendMessage(`AI: ${capitalOfBrazilResponse}`, 'ai');
+}
+function respondToFacebookFounder() {
+    const facebookFounderResponse = "Mark Zuckerberg is the founder of Facebook.";
+    appendMessage(`AI: ${facebookFounderResponse}`, 'ai');
+}
+
+function respondToCapitalOfJapan() {
+    const capitalOfJapanResponse = "The capital of Japan is Tokyo.";
+    appendMessage(`AI: ${capitalOfJapanResponse}`, 'ai');
+}
+
+function respondTo1984Author() {
+    const author1984Response = "George Orwell wrote '1984'.";
+    appendMessage(`AI: ${author1984Response}`, 'ai');
+}
+
+function respondToLargestAnimalOnEarth() {
+    const largestAnimalOnEarthResponse = "The blue whale is the largest animal on Earth.";
+    appendMessage(`AI: ${largestAnimalOnEarthResponse}`, 'ai');
+}
+
+function respondToRichestPersonInWorld() {
+    const richestPersonInWorldResponse = "As of my last update in January 2022, Elon Musk is one of the richest persons in the world.";
+    appendMessage(`AI: ${richestPersonInWorldResponse}`, 'ai');
+}
+
+function respondToMeaningOfAI() {
+    const meaningOfAIResponse = "AI stands for Artificial Intelligence, which refers to the simulation of human intelligence in machines.";
+    appendMessage(`AI: ${meaningOfAIResponse}`, 'ai');
+}
+
+function respondToRiddle() {
+    const riddleResponse = "I can be cracked, made, told, and played. What am I? Answer: A joke.";
+    appendMessage(`AI: ${riddleResponse}`, 'ai');
+}
+
+function respondToCEOOfApple() {
+    const ceoOfAppleResponse = "As of my last update in January 2022, Tim Cook is the CEO of Apple.";
+    appendMessage(`AI: ${ceoOfAppleResponse}`, 'ai');
+}
+
+function respondToCapitalOfChina() {
+    const capitalOfChinaResponse = "The capital of China is Beijing.";
+    appendMessage(`AI: ${capitalOfChinaResponse}`, 'ai');
+}
+
+function respondToElectricityDiscoverer() {
+    const electricityDiscovererResponse = "Benjamin Franklin is often credited with discovering electricity.";
+    appendMessage(`AI: ${electricityDiscovererResponse}`, 'ai');
+}
+
+function respondToCurrencyOfRussia() {
+    const currencyOfRussiaResponse = "The currency of Russia is the Russian Ruble.";
+    appendMessage(`AI: ${currencyOfRussiaResponse}`, 'ai');
+}
+
+function respondToHarryPotterAuthor() {
+    const harryPotterAuthorResponse = "J.K. Rowling is the author of the 'Harry Potter' series.";
+    appendMessage(`AI: ${harryPotterAuthorResponse}`, 'ai');
+}
+
+function respondToLargestContinent() {
+    const largestContinentResponse = "Asia is the largest continent.";
+    appendMessage(`AI: ${largestContinentResponse}`, 'ai');
+}
+
+function respondToFatherOfModernPhysics() {
+    const fatherOfModernPhysicsResponse = "Albert Einstein is often referred to as the father of modern physics.";
+    appendMessage(`AI: ${fatherOfModernPhysicsResponse}`, 'ai');
+}
+
+function respondToWorldPopulation() {
+    const worldPopulationResponse = "As of my last update in January 2022, the world population is over 7.9 billion.";
+    appendMessage(`AI: ${worldPopulationResponse}`, 'ai');
+}
+
+function respondToGoogleFounder() {
+    const googleFounderResponse = "Larry Page and Sergey Brin are the founders of Google.";
+    appendMessage(`AI: ${googleFounderResponse}`, 'ai');
+}
+
+function respondToCapitalOfIndia() {
+    const capitalOfIndiaResponse = "The capital of India is New Delhi.";
+    appendMessage(`AI: ${capitalOfIndiaResponse}`, 'ai');
+}
+
+function respondToLastSupperPainter() {
+    const lastSupperPainterResponse = "Leonardo da Vinci painted 'The Last Supper'.";
+    appendMessage(`AI: ${lastSupperPainterResponse}`, 'ai');
+}
+
+function respondToSpeedOfSound() {
+    const speedOfSoundResponse = "The speed of sound varies depending on the medium, but in dry air at 20 degrees Celsius, it's approximately 343 meters per second.";
+    appendMessage(`AI: ${speedOfSoundResponse}`, 'ai');
+}
+
+function respondToGreatGatsbyAuthor() {
+    const greatGatsbyAuthorResponse = "F. Scott Fitzgerald wrote 'The Great Gatsby'.";
+    appendMessage(`AI: ${greatGatsbyAuthorResponse}`, 'ai');
+}
+
+function respondToSmallestPlanet() {
+    const smallestPlanetResponse = "Mercury is the smallest planet in our solar system.";
+    appendMessage(`AI: ${smallestPlanetResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterUK() {
+    const currentPrimeMinisterUKResponse = "As of my last update in January 2022, the current Prime Minister of the UK is Boris Johnson.";
+    appendMessage(`AI: ${currentPrimeMinisterUKResponse}`, 'ai');
+}
+
+function respondToCapitalOfSouthAfrica() {
+    const capitalOfSouthAfricaResponse = "The capital of South Africa is Pretoria.";
+    appendMessage(`AI: ${capitalOfSouthAfricaResponse}`, 'ai');
+}
+
+function respondToTamilNameForLemon() {
+    const lemonTamilNameResponse = "Lemon in Tamil is எலுமிச்சை (Elumichai).";
+    appendMessage(`AI: ${lemonTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBrinjal() {
+    const brinjalTamilNameResponse = "Brinjal in Tamil is கத்திரிக்காய் (Kathirikai).";
+    appendMessage(`AI: ${brinjalTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPotato() {
+    const potatoTamilNameResponse = "Potato in Tamil is உருளைக்கிழங்கு (Urulai Kilangu).";
+    appendMessage(`AI: ${potatoTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForTomato() {
+    const tomatoTamilNameResponse = "Tomato in Tamil is தக்காளி (Thakkali).";
+    appendMessage(`AI: ${tomatoTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCucumber() {
+    const cucumberTamilNameResponse = "Cucumber in Tamil is வெள்ளரிக்காய் (Vellarikai).";
+    appendMessage(`AI: ${cucumberTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForOnion() {
+    const onionTamilNameResponse = "Onion in Tamil is வெங்காயம் (Vengayam).";
+    appendMessage(`AI: ${onionTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSpinach() {
+    const spinachTamilNameResponse = "Spinach in Tamil is கீரை (Keerai).";
+    appendMessage(`AI: ${spinachTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCarrot() {
+    const carrotTamilNameResponse = "Carrot in Tamil is கேரட் (Keradu).";
+    appendMessage(`AI: ${carrotTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForRadish() {
+    const radishTamilNameResponse = "Radish in Tamil is முள்ளங்கி (Mullangi).";
+    appendMessage(`AI: ${radishTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCauliflower() {
+    const cauliflowerTamilNameResponse = "Cauliflower in Tamil is பூக்கோசு (Pookosu).";
+    appendMessage(`AI: ${cauliflowerTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCabbage() {
+    const cabbageTamilNameResponse = "Cabbage in Tamil is முட்டாளி (Muttaali).";
+    appendMessage(`AI: ${cabbageTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForLadyfinger() {
+    const ladyfingerTamilNameResponse = "Ladyfinger in Tamil is வெண்டைக்காய் (Vendaikkai).";
+    appendMessage(`AI: ${ladyfingerTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGreenChili() {
+    const greenChiliTamilNameResponse = "Green Chili in Tamil is பச்சை மிளகாய் (Pachai Milagai).";
+    appendMessage(`AI: ${greenChiliTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCapsicum() {
+    const capsicumTamilNameResponse = "Capsicum in Tamil is குடை மிளகாய் (Kudai Milagai).";
+    appendMessage(`AI: ${capsicumTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBeetroot() {
+    const beetrootTamilNameResponse = "Beetroot in Tamil is பீட்ரூட் (Beetroot).";
+    appendMessage(`AI: ${beetrootTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPumpkin() {
+    const pumpkinTamilNameResponse = "Pumpkin in Tamil is பரங்கிக்காய் (Parangikai).";
+    appendMessage(`AI: ${pumpkinTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGarlic() {
+    const garlicTamilNameResponse = "Garlic in Tamil is பூண்டு (Poondu).";
+    appendMessage(`AI: ${garlicTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGinger() {
+    const gingerTamilNameResponse = "Ginger in Tamil is இஞ்சி (Inji).";
+    appendMessage(`AI: ${gingerTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGreenPeas() {
+    const greenPeasTamilNameResponse = "Green Peas in Tamil is பட்டாணி (Pattani).";
+    appendMessage(`AI: ${greenPeasTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCoriander() {
+    const corianderTamilNameResponse = "Coriander in Tamil is கொத்தமல்லி (Kothamalli).";
+    appendMessage(`AI: ${corianderTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForMint() {
+    const mintTamilNameResponse = "Mint in Tamil is புதினா (Pudhina).";
+    appendMessage(`AI: ${mintTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCurryLeaves() {
+    const curryLeavesTamilNameResponse = "Curry Leaves in Tamil is கறிவேப்பிலை (Karuveppilai).";
+    appendMessage(`AI: ${curryLeavesTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForEggplant() {
+    const eggplantTamilNameResponse = "Eggplant in Tamil is கத்திரிக்காய் (Kathirikai).";
+    appendMessage(`AI: ${eggplantTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForRidgeGourd() {
+    const ridgeGourdTamilNameResponse = "Ridge Gourd in Tamil is பீர்க்கங்காய் (Peerkangai).";
+    appendMessage(`AI: ${ridgeGourdTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBitterGourd() {
+    const bitterGourdTamilNameResponse = "Bitter Gourd in Tamil is பாகற்காய் (Pagarkai).";
+    appendMessage(`AI: ${bitterGourdTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSnakeGourd() {
+    const snakeGourdTamilNameResponse = "Snake Gourd in Tamil is புடலங்காய் (Pudalangai).";
+    appendMessage(`AI: ${snakeGourdTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForDrumstick() {
+    const drumstickTamilNameResponse = "Drumstick in Tamil is முருங்கக்காய் (Murungakkai).";
+    appendMessage(`AI: ${drumstickTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBottleGourd() {
+    const bottleGourdTamilNameResponse = "Bottle Gourd in Tamil is சுரைக்காய் (Surakkaai).";
+    appendMessage(`AI: ${bottleGourdTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForOkra() {
+    const okraTamilNameResponse = "Okra in Tamil is வெண்டைக்காய் (Vendaikkai).";
+    appendMessage(`AI: ${okraTamilNameResponse}`, 'ai');
+}
+function respondToTamilNameForApple() {
+    const appleTamilNameResponse = "Apple in Tamil is அரத்திப்பழம் (Arathipazham).";
+    appendMessage(`AI: ${appleTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBanana() {
+    const bananaTamilNameResponse = "Banana in Tamil is வாழைப்பழம் (Vaalai Pazham).";
+    appendMessage(`AI: ${bananaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForOrange() {
+    const orangeTamilNameResponse = "Orange in Tamil is ஆரஞ்சு (Aaranju).";
+    appendMessage(`AI: ${orangeTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForMango() {
+    const mangoTamilNameResponse = "Mango in Tamil is மாம்பழம் (Maampazham).";
+    appendMessage(`AI: ${mangoTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGrapes() {
+    const grapesTamilNameResponse = "Grapes in Tamil is திராட்சை (Thiraatchai).";
+    appendMessage(`AI: ${grapesTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPomegranate() {
+    const pomegranateTamilNameResponse = "Pomegranate in Tamil is மாதுளம் (Maadhulam).";
+    appendMessage(`AI: ${pomegranateTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGuava() {
+    const guavaTamilNameResponse = "Guava in Tamil is கொய்யா (Koyya).";
+    appendMessage(`AI: ${guavaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPapaya() {
+    const papayaTamilNameResponse = "Papaya in Tamil is பப்பாளி (Pappali).";
+    appendMessage(`AI: ${papayaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForStrawberry() {
+    const strawberryTamilNameResponse = "Strawberry in Tamil is ஸ்ட்ராபெரி (Straberi).";
+    appendMessage(`AI: ${strawberryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForWatermelon() {
+    const watermelonTamilNameResponse = "Watermelon in Tamil is தர்பூசாணி (Tharboosani).";
+    appendMessage(`AI: ${watermelonTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForKiwi() {
+    const kiwiTamilNameResponse = "Kiwi in Tamil is கீவி (Kiwi).";
+    appendMessage(`AI: ${kiwiTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPineapple() {
+    const pineappleTamilNameResponse = "Pineapple in Tamil is அன்னாசிப் பழம் (Annasi Pazham).";
+    appendMessage(`AI: ${pineappleTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCherry() {
+    const cherryTamilNameResponse = "Cherry in Tamil is செரி (Seri).";
+    appendMessage(`AI: ${cherryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBlueberry() {
+    const blueberryTamilNameResponse = "Blueberry in Tamil is ப்ளூபெரி (Blueberry).";
+    appendMessage(`AI: ${blueberryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForAvocado() {
+    const avocadoTamilNameResponse = "Avocado in Tamil is அவகாடோ (Avocado).";
+    appendMessage(`AI: ${avocadoTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCustardApple() {
+    const custardAppleTamilNameResponse = "Custard Apple in Tamil is சீதாழிப் பழம் (Seethaazha Pazham).";
+    appendMessage(`AI: ${custardAppleTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPeach() {
+    const peachTamilNameResponse = "Peach in Tamil is பீச் (Peach).";
+    appendMessage(`AI: ${peachTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForApricot() {
+    const apricotTamilNameResponse = "Apricot in Tamil is ஆப்பிரிகாட் (Apricot).";
+    appendMessage(`AI: ${apricotTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPlum() {
+    const plumTamilNameResponse = "Plum in Tamil is ப்ளம் (Plum).";
+    appendMessage(`AI: ${plumTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForFig() {
+    const figTamilNameResponse = "Fig in Tamil is அதிபழம் (Adipazham).";
+    appendMessage(`AI: ${figTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForDates() {
+    const datesTamilNameResponse = "Dates in Tamil is பேரிச்சம் (Pericham).";
+    appendMessage(`AI: ${datesTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForRaspberry() {
+    const raspberryTamilNameResponse = "Raspberry in Tamil is ராஸ்பெரி (Raspberry).";
+    appendMessage(`AI: ${raspberryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForBlackberry() {
+    const blackberryTamilNameResponse = "Blackberry in Tamil is பிளாக்பெரி (Blackberry).";
+    appendMessage(`AI: ${blackberryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCranberry() {
+    const cranberryTamilNameResponse = "Cranberry in Tamil is கிரேன்பெரி (Cranberry).";
+    appendMessage(`AI: ${cranberryTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForDragonFruit() {
+    const dragonFruitTamilNameResponse = "Dragon Fruit in Tamil is டிராகன் பழம் (Dragon Pazham).";
+    appendMessage(`AI: ${dragonFruitTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForMuskMelon() {
+    const muskMelonTamilNameResponse = "Musk Melon in Tamil is மகாளிராணி (Maghalirani).";
+    appendMessage(`AI: ${muskMelonTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForJackfruit() {
+    const jackfruitTamilNameResponse = "Jackfruit in Tamil is பலாப்பழம் (Palapazham).";
+    appendMessage(`AI: ${jackfruitTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForLychee() {
+    const lycheeTamilNameResponse = "Lychee in Tamil is லைசி (Lychee).";
+    appendMessage(`AI: ${lycheeTamilNameResponse}`, 'ai');
+}
+function respondToTamilNameForLion() {
+    const lionTamilNameResponse = "Lion in Tamil is சிங்கம் (Singam).";
+    appendMessage(`AI: ${lionTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForElephant() {
+    const elephantTamilNameResponse = "Elephant in Tamil is யானை (Yaanai).";
+    appendMessage(`AI: ${elephantTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForTiger() {
+    const tigerTamilNameResponse = "Tiger in Tamil is புலி (Puli).";
+    appendMessage(`AI: ${tigerTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCow() {
+    const cowTamilNameResponse = "Cow in Tamil is மாடு (Maadu).";
+    appendMessage(`AI: ${cowTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForDog() {
+    const dogTamilNameResponse = "Dog in Tamil is நாய் (Nay).";
+    appendMessage(`AI: ${dogTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCat() {
+    const catTamilNameResponse = "Cat in Tamil is பூனை (Poonai).";
+    appendMessage(`AI: ${catTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForHorse() {
+    const horseTamilNameResponse = "Horse in Tamil is குதிரை (Kudhirai).";
+    appendMessage(`AI: ${horseTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForMonkey() {
+    const monkeyTamilNameResponse = "Monkey in Tamil is குரங்கு (Kurangu).";
+    appendMessage(`AI: ${monkeyTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGiraffe() {
+    const giraffeTamilNameResponse = "Giraffe in Tamil is சிராஃப் (Siraph).";
+    appendMessage(`AI: ${giraffeTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForZebra() {
+    const zebraTamilNameResponse = "Zebra in Tamil is குருவி (Kuruvi).";
+    appendMessage(`AI: ${zebraTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPenguin() {
+    const penguinTamilNameResponse = "Penguin in Tamil is பெங்குயின் (Penguin).";
+    appendMessage(`AI: ${penguinTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForKangaroo() {
+    const kangarooTamilNameResponse = "Kangaroo in Tamil is கேங்காரூ (Kangaroo).";
+    appendMessage(`AI: ${kangarooTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCrocodile() {
+    const crocodileTamilNameResponse = "Crocodile in Tamil is முதலை (Muthalai).";
+    appendMessage(`AI: ${crocodileTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPanda() {
+    const pandaTamilNameResponse = "Panda in Tamil is பாண்டா (Panda).";
+    appendMessage(`AI: ${pandaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForGorilla() {
+    const gorillaTamilNameResponse = "Gorilla in Tamil is கொரில்லா (Gorilla).";
+    appendMessage(`AI: ${gorillaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForRabbit() {
+    const rabbitTamilNameResponse = "Rabbit in Tamil is முட்டாள் (Muttal).";
+    appendMessage(`AI: ${rabbitTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForDolphin() {
+    const dolphinTamilNameResponse = "Dolphin in Tamil is கடல் முகாம் (Kadal Mugam).";
+    appendMessage(`AI: ${dolphinTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPeacock() {
+    const peacockTamilNameResponse = "Peacock in Tamil is மயில் (Mayil).";
+    appendMessage(`AI: ${peacockTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSquirrel() {
+    const squirrelTamilNameResponse = "Squirrel in Tamil is அணில் (Anil).";
+    appendMessage(`AI: ${squirrelTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForKoala() {
+    const koalaTamilNameResponse = "Koala in Tamil is கோவாலா (Koala).";
+    appendMessage(`AI: ${koalaTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPenguin() {
+    const penguinTamilNameResponse = "Penguin in Tamil is பெங்குயின் (Penguin).";
+    appendMessage(`AI: ${penguinTamilNameResponse}`, 'ai');
+}
+function respondToTamilNameForCrow() {
+    const crowTamilNameResponse = "Crow in Tamil is காகம் (Kaagam).";
+    appendMessage(`AI: ${crowTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSparrow() {
+    const sparrowTamilNameResponse = "Sparrow in Tamil is சிட்டு (Sittu).";
+    appendMessage(`AI: ${sparrowTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPeacock() {
+    const peacockTamilNameResponse = "Peacock in Tamil is மயில் (Mayil).";
+    appendMessage(`AI: ${peacockTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForEagle() {
+    const eagleTamilNameResponse = "Eagle in Tamil is கழுகு (Kazhugu).";
+    appendMessage(`AI: ${eagleTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPigeon() {
+    const pigeonTamilNameResponse = "Pigeon in Tamil is குடுகுடு (Kudukudu).";
+    appendMessage(`AI: ${pigeonTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForParrot() {
+    const parrotTamilNameResponse = "Parrot in Tamil is கிளி (Kili).";
+    appendMessage(`AI: ${parrotTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForOwl() {
+    const owlTamilNameResponse = "Owl in Tamil is ஆந்தை (Aandhai).";
+    appendMessage(`AI: ${owlTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSwan() {
+    const swanTamilNameResponse = "Swan in Tamil is நெருப்பு (Neruppu).";
+    appendMessage(`AI: ${swanTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForHawk() {
+    const hawkTamilNameResponse = "Hawk in Tamil is கொம்பன் (Komban).";
+    appendMessage(`AI: ${hawkTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForKingfisher() {
+    const kingfisherTamilNameResponse = "Kingfisher in Tamil is மீன்கொத்தி (Meen Kothi).";
+    appendMessage(`AI: ${kingfisherTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForWoodpecker() {
+    const woodpeckerTamilNameResponse = "Woodpecker in Tamil is காட்டுக்குருவி (Kattu Kurvi).";
+    appendMessage(`AI: ${woodpeckerTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForRobin() {
+    const robinTamilNameResponse = "Robin in Tamil is ராபின் (Robin).";
+    appendMessage(`AI: ${robinTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForHummingbird() {
+    const hummingbirdTamilNameResponse = "Hummingbird in Tamil is ஹமிங்பேர்டு (Hummingbird).";
+    appendMessage(`AI: ${hummingbirdTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCuckoo() {
+    const cuckooTamilNameResponse = "Cuckoo in Tamil is கூயில் (Kuyil).";
+    appendMessage(`AI: ${cuckooTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForFlamingo() {
+    const flamingoTamilNameResponse = "Flamingo in Tamil is பூவாளா (Poovaala).";
+    appendMessage(`AI: ${flamingoTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForSeagull() {
+    const seagullTamilNameResponse = "Seagull in Tamil is கடற்கட்டான் (Kadarkattan).";
+    appendMessage(`AI: ${seagullTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForOstrich() {
+    const ostrichTamilNameResponse = "Ostrich in Tamil is பேரியாணை (Periyanaai).";
+    appendMessage(`AI: ${ostrichTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForPelican() {
+    const pelicanTamilNameResponse = "Pelican in Tamil is பெலிகன் (Pelikan).";
+    appendMessage(`AI: ${pelicanTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForToucan() {
+    const toucanTamilNameResponse = "Toucan in Tamil is டூகான் (Toucan).";
+    appendMessage(`AI: ${toucanTamilNameResponse}`, 'ai');
+}
+
+function respondToTamilNameForCardinal() {
+    const cardinalTamilNameResponse = "Cardinal in Tamil is கார்டினல் (Cardinal).";
+    appendMessage(`AI: ${cardinalTamilNameResponse}`, 'ai');
+}
+
+function respondToHappiness() {
+    const happinessResponse = "The meaning of happiness can vary from person to person and is often associated with feelings of joy, contentment, and fulfillment.";
+    appendMessage(`AI: ${happinessResponse}`, 'ai');
+}
+
+function respondToRainbowFormation() {
+    const rainbowFormationResponse = "Rainbows form when sunlight is refracted, reflected, and dispersed in water droplets, creating a spectrum of colors.";
+    appendMessage(`AI: ${rainbowFormationResponse}`, 'ai');
+}
+
+function respondToComputerInventor() {
+    const computerInventorResponse = "The invention of the computer involves contributions from various individuals, including Charles Babbage, Alan Turing, and others.";
+    appendMessage(`AI: ${computerInventorResponse}`, 'ai');
+}
+
+function respondToCapitalOfAustralia() {
+    const capitalOfAustraliaResponse = "The capital of Australia is Canberra.";
+    appendMessage(`AI: ${capitalOfAustraliaResponse}`, 'ai');
+}
+
+function respondToBlackHoles() {
+    const blackHolesResponse = "Black holes are regions of spacetime exhibiting gravitational pull so strong that nothing—no particles or even electromagnetic radiation—can escape from them.";
+    appendMessage(`AI: ${blackHolesResponse}`, 'ai');
+}
+
+function respondToCatcherInTheRyeAuthor() {
+    const catcherInTheRyeAuthorResponse = "J.D. Salinger wrote 'The Catcher in the Rye'.";
+    appendMessage(`AI: ${catcherInTheRyeAuthorResponse}`, 'ai');
+}
+
+function respondToLargestFlower() {
+    const largestFlowerResponse = "The Rafflesia arnoldii is considered the largest flower in the world.";
+    appendMessage(`AI: ${largestFlowerResponse}`, 'ai');
+}
+
+function respondToMoonlightSonataComposer() {
+    const moonlightSonataComposerResponse = "Ludwig van Beethoven composed the Moonlight Sonata.";
+    appendMessage(`AI: ${moonlightSonataComposerResponse}`, 'ai');
+}
+
+function respondToCurrencyOfSouthKorea() {
+    const currencyOfSouthKoreaResponse = "The currency of South Korea is the South Korean Won.";
+    appendMessage(`AI: ${currencyOfSouthKoreaResponse}`, 'ai');
+}
+
+function respondToCurrentPrimeMinisterAustralia() {
+    const currentPrimeMinisterAustraliaResponse = "As of my last update in January 2022, the current Prime Minister of Australia is Scott Morrison.";
+    appendMessage(`AI: ${currentPrimeMinisterAustraliaResponse}`, 'ai');
+}
+
+function respondToCheetahSpeed() {
+    const cheetahSpeedResponse = "Cheetahs are known for their incredible speed, reaching up to 60 to 70 miles per hour.";
+    appendMessage(`AI: ${cheetahSpeedResponse}`, 'ai');
+}
+
+function respondToSistineChapelPainter() {
+    const sistineChapelPainterResponse = "Michelangelo painted the Sistine Chapel ceiling.";
+    appendMessage(`AI: ${sistineChapelPainterResponse}`, 'ai');
+}
+
+function respondToHistoricalFact() {
+    const historicalFactResponse = "In 1969, humans landed on the moon during the Apollo 11 mission.";
+    appendMessage(`AI: ${historicalFactResponse}`, 'ai');
+}
+
+function respondToCEOOfAmazon() {
+    const ceoOfAmazonResponse = "As of my last update in January 2022, Andy Jassy is the CEO of Amazon.";
+    appendMessage(`AI: ${ceoOfAmazonResponse}`, 'ai');
+}
+
+function respondToDarkMatter() {
+    const darkMatterResponse = "Dark matter is a mysterious form of matter that does not emit, absorb, or reflect light, making it invisible and detectable only through its gravitational effects.";
+    appendMessage(`AI: ${darkMatterResponse}`, 'ai');
+}
+
+function respondToRelativityTheoryDiscoverer() {
+    const relativityTheoryDiscovererResponse = "Albert Einstein formulated the theory of relativity.";
+    appendMessage(`AI: ${relativityTheoryDiscovererResponse}`, 'ai');
+}
+
+function respondToNationalDishItaly() {
+    const nationalDishItalyResponse = "One of the traditional national dishes of Italy is pasta, often accompanied by various sauces.";
+    appendMessage(`AI: ${nationalDishItalyResponse}`, 'ai');
+}
+
+function respondToPrideAndPrejudiceAuthor() {
+    const prideAndPrejudiceAuthorResponse = "Jane Austen wrote 'Pride and Prejudice'.";
+    appendMessage(`AI: ${prideAndPrejudiceAuthorResponse}`, 'ai');
+}
+
+function respondToBoilingPointOfNitrogen() {
+    const boilingPointOfNitrogenResponse = "The boiling point of nitrogen is approximately -196 degrees Celsius (-321 degrees Fahrenheit).";
+    appendMessage(`AI: ${boilingPointOfNitrogenResponse}`, 'ai');
+}
+
+function respondToCurrentPresidentChina() {
+    const currentPresidentChinaResponse = "As of my last update in January 2022, Xi Jinping is the President of China.";
+    appendMessage(`AI: ${currentPresidentChinaResponse}`, 'ai');
+}
+
+function respondToPurposeOfLife() {
+    const purposeOfLifeResponse = "The purpose of life is a philosophical and existential question with diverse interpretations and beliefs.";
+    appendMessage(`AI: ${purposeOfLifeResponse}`, 'ai');
+}
+
+function respondToNobelPrizeLiterature2023() {
+    const nobelPrizeLiterature2023Response = "The Nobel Prize in Literature for 2023 has not been awarded yet.";
+    appendMessage(`AI: ${nobelPrizeLiterature2023Response}`, 'ai');
+}
+
+function respondToUnknownQuestion() {
+    const unknownResponse = "I'm not sure about that. Feel free to ask another question!";
+    appendMessage(`AI: ${unknownResponse}`, 'ai');
+}
+</script>
+</body>
+</html>

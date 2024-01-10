@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legendary Photo Gallery</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+    body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: auto;
+    background: linear-gradient(to right, #4a148c, #1e88e5);
+}
+
+header {
+    height: 20px;
+    color: #ecf0f1;
+    padding: 10px;
+    text-align: center;
+}
+
+footer {
+    margin-top: 100px;
+    height: 20px;
+    color: #ecf0f1;
+    padding: 10px;
+    text-align: center;
+}
+
+section {
+    display: flex;    
+    padding: 20px;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;   
+}
+
+.container img {
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+    padding: 20px;
+}
+
+			@keyframes pulse {
+			0% {
+			transform: scale(1);
+			}
+			50% {
+			transform: scale(1.05);
+			}
+			100% {
+			transform: scale(1);
+			}
+			}
+			.pulse-animation {
+			animation: pulse 3s infinite ease-in-out;
+			}
+
+h1 {
+    color: #ffffff;
+    margin-top: 20px;
+}
+
+p {
+    color: #ecf0f1;
+    margin-bottom: 20px;
+}
+
+#particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+    </style>
+</head>
+<body>
+     <div id="particles"></div>
+
+    <header>
+        <h1>Gallery</h1>
+    </header>
+    <br>
+    <br>
+    <section id="Mine" class="container pulse-animation">
+        <br>
+        <img src="photo1.jpg" alt="Photo 1">
+        <br>
+        <img src="photo2.jpg" alt="Photo 2">
+        <br>
+        <img src="photo3.jpg" alt="Photo 3">
+        <br>
+        <img src="photo4.jpg" alt="Photo 4">
+        <br>
+        <img src="photo5.jpg" alt="Photo 5">
+        <br>
+        <img src="photo6.jpg" alt="Photo 6">
+        <br>
+        <img src="photo7.jpg" alt="Photo 7">
+        <br>
+        <img src="photo8.jpg" alt="Photo 8">
+        <br>
+     
+      
+    </section>
+    <br>
+    <br>
+    <footer>
+        <p>&copy;Designed By Legendary One</p>
+    </footer> 
+ 
+    
+    <script>
+        particlesJS('particles', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ffffff',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 400,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+        
+        
+document.addEventListener('DOMContentLoaded', function () {
+  const container = document.querySelector('#Mine .container');
+
+
+  let startX;
+  let startY;
+
+container.addEventListener('touchstart', function (e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
+
+  container.addEventListener('touchmove', function (e) {
+    const deltaX = startX - e.touches[0].clientX;
+    const deltaY = startY - e.touches[0].clientY;
+
+    const isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+
+    if (isVerticalScroll) {
+      window.scrollBy(0, deltaY);
+      e.preventDefault();
+    }
+
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
+
+  container.addEventListener('touchend', function (e) {
+    const atBottom =
+      container.scrollLeft + container.clientWidth >=
+      container.scrollWidth - 1;
+
+    if (atBottom && e.touches.length === 0) {
+      window.scrollBy(0, window.innerHeight);
+    }
+  });
+});
+
+    </script>
+</body>
+</html>
+
