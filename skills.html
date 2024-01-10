@@ -115,7 +115,7 @@
     <header>
         <h1>I CAN WORK WITH</h1>
     </header>
-    
+
     <section>
         <div class="box box-html" onclick="changeColor(this)">
             <h2>HTML</h2>
@@ -162,6 +162,8 @@
 
     <script>
         function changeColor(element) {
+    console.log('changeColor function called');
+
     var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     element.style.backgroundColor = randomColor;
 
@@ -177,12 +179,17 @@
 
     // Play sound based on box type when there is a user interaction
     var soundId = element.classList[1] + 'Sound';
+    console.log('Sound ID:', soundId);
+
     var sound = document.getElementById(soundId);
 
     if (sound) {
+        console.log('Playing sound:', soundId);
         sound.play().catch(error => {
             console.error('Error playing sound:', error);
         });
+    } else {
+        console.error('Sound element not found:', soundId);
     }
 
     setTimeout(() => {
@@ -190,6 +197,7 @@
         element.style.boxShadow = 'none';
     }, 300);
 }
+
     </script>
 
 </body>
