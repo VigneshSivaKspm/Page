@@ -2036,6 +2036,13 @@ function respondToUnknownQuestion() {
     const unknownResponse = "I'm not sure about that. Feel free to ask another question!";
     appendMessage(`AI: ${unknownResponse}`, 'ai');
 }
+
+    // Display a welcome message when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    const welcomeMessage = "Welcome! I'm a Simple Chatbot Designed By Legendary One..Ask me anything or try a math expression.";
+    appendMessage(`AI: ${welcomeMessage}`, 'ai');
+});
+
 </script>
 </body>
 </html>
