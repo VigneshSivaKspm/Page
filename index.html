@@ -412,23 +412,15 @@
          });
       </script>
       <script>
-        
+        // Fetch the content of the text file from Github
         fetch('showprogram.txt')
             .then(response => response.text())
             .then(data => {
-                // Escape HTML tags before displaying
-                data = escapeHtml(data);
                 // Display the content in the pre tag
                 document.getElementById('code-container').innerHTML = syntaxHighlight(data);
             })
             .catch(error => console.error('Error fetching code:', error));
 
-        // Function to escape HTML tags
-        function escapeHtml(text) {
-            var div = document.createElement('div');
-            div.innerText = text;
-            return div.innerHTML;
-        }
 
         // Function to add syntax highlighting
         function syntaxHighlight(code) {
@@ -450,5 +442,6 @@
             return code;
         }
     </script>
+      
 </body>
 </html>
