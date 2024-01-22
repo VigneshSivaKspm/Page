@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<htm.l lang="en">
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -412,25 +412,16 @@
          });
       </script>
       <script>
-       
+        
         fetch('https://raw.githubusercontent.com/your-username/your-repo/main/your_code.txt')
             .then(response => response.text())
             .then(data => {
-                // Escape HTML tags before displaying
-                data = escapeHtml(data);
                 // Display the content in the pre tag
                 document.getElementById('code-container').innerHTML = syntaxHighlight(data);
             })
             .catch(error => console.error('Error fetching code:', error));
 
-
-        // Function to escape HTML tags
-        function escapeHtml(text) {
-            var div = document.createElement('div');
-            div.innerText = text;
-            return div.innerHTML;
-        }
-
+        
         // Function to add syntax highlighting
         function syntaxHighlight(code) {
             // Define regex patterns for highlighting
@@ -451,5 +442,5 @@
             return code;
         }
     </script>
-   </body>
-</html>
+</body>
+</htm.l>
