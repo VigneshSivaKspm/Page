@@ -423,18 +423,6 @@
             })
             .catch(error => console.error('Error fetching code:', error));
 
-        // Function to copy code to clipboard
-        function copyToClipboard() {
-            var codeContainer = document.getElementById('code-container');
-            var range = document.createRange();
-            range.selectNode(codeContainer);
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange(range);
-            document.execCommand('copy');
-            window.getSelection().removeAllRanges();
-            alert('Code copied to clipboard!');
-        }
-
         // Function to escape HTML tags
         function escapeHtml(text) {
             var div = document.createElement('div');
