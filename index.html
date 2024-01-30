@@ -177,6 +177,7 @@
          }
 
          .container {
+            background-color: black;
             display: flex;
             flex-direction: column;
             align-items: stretch;
@@ -203,6 +204,7 @@
          }
 
          pre {
+            background-color: black;
             white-space: pre-wrap;
             overflow: auto;
             background-color: black;
@@ -225,22 +227,24 @@
             border: none;
          }
          
-         .html-tag {
-            color: blue;
-        }
-        .html-attribute {
-            color: red;
-        }
-        .html-value {
-            color: green;
-        }
-        /* Additional styles for JavaScript syntax highlighting */
-        .language-javascript .token.keyword {
-            color: purple;
-        }
-        .language-javascript .token.string {
-            color: orange;
-        }
+         /* Additional styles for HTML syntax highlighting */
+.code-container .html-tag {
+    color: blue; /* HTML tags */
+}
+.code-container .html-attribute {
+    color: red; /* HTML attributes */
+}
+.code-container .html-value {
+    color: green; /* Attribute values */
+}
+.code-container .language-javascript .token.keyword {
+    color: purple; /* JavaScript keywords */
+}
+.code-container .language-javascript .token.string {
+    color: orange; /* Strings in JavaScript */
+}
+/* Add more styles for other token types as needed */
+
 
     
       </style>
@@ -268,7 +272,7 @@
          </p>
       </div>
       <div class="button-container">
-         <a style="background: linear-gradient(45deg, #ffae42 50%, #333 50%)" href="ai.html" class="button button1">Own AI</a>
+         <a style="background: linear-gradient45deg, #ffae42 50%, #333 50%" href="ai.html" class="button button1">Own AI</a>
          <a href="biodata.html" class="button button2">Bio Data</a>
          <a href="skills.html" class="button button2">Skills</a>
          <a href="certificates.html" class="button button2">Certificates</a>
