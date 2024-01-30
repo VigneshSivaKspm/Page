@@ -1,436 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="Passionate web developer and creative individual on a quest for excellence in design and development. Join me on a journey through creativity.">
-      <meta name="keywords" content="web development, Vignesh Siva Kspm, design, creativity, GitHub Pages, legendaryone, legend, vignesh github, vignesh siva">
-      <meta name="author" content="Legendary One">
-      <meta name="robots" content="index, follow">
-      <meta name="google-site-verification" content="r0WBo76dwr2oyWYwexfFWfh3-17rL9vzuYdO9YE5dRo">
-      <title>Legendary One</title>
-      <!-- Include Particles.js library -->
-      <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-299639386-1"></script>
-      <script>
-         window.dataLayer = window.dataLayer || [];
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Passionate web developer and creative individual on a quest for excellence in design and development. Join me on a journey through creativity.">
+    <meta name="keywords" content="web development, Vignesh Siva Kspm, design, creativity, GitHub Pages, legendaryone, legend, vignesh github, vignesh siva">
+    <meta name="author" content="Legendary One">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="r0WBo76dwr2oyWYwexfFWfh3-17rL9vzuYdO9YE5dRo">
+    <title>Legendary One</title>
+    <!-- Include Particles.js library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-299639386-1"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
 
-         function gtag() {
-            dataLayer.push(arguments);
-         }
-         gtag('js', new Date());
-         gtag('config', 'UA-299639386-1');
-      </script>
-      <!-- Google Tag Manager -->
-      <script>
-         (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-               'gtm.start': new Date().getTime(),
-               event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-               j = d.createElement(s),
-               dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-         })(window, document, 'script', 'dataLayer', 'GTM-N9TV4XJC');
-      </script>
-      <!-- End Google Tag Manager -->
-      <style>
-         @keyframes gradient {
-            0% {
-               background-position: 200% 0;
-            }
-
-            100% {
-               background-position: -200% 0;
-            }
-         }
-
-         body {
-            font-family: 'Roboto', sans-serif;
-            color: #fff;
-            background-color: #1a1a1a;
-            /* Set the background color to dark */
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            overflow: auto;
-         }
-
-         header,
-         footer {
-            background-color: #1a1a1a;
-            padding: 0px;
-            color: #fff;
-         }
-
-         h1 {
-            font-size: 36px;
-            font-weight: bold;
-            color: white;
-            background: linear-gradient(45deg, #ffae42 50%, #333 50%);
-            background-size: 200% 100%;
-            animation: gradient 3s infinite;
-            text-transform: uppercase;
-            padding: 10px;
-            display: inline-block;
-            width: 300px;
-         }
-
-         .span1 {
-            font-size: 16px;
-         }
-
-         .span2 {
-            font-size: 36px;
-         }
-
-         h2 {
-            color: #ffae42;
-         }
-
-         .about-section {
-            margin-top: 0px;
-            margin: 50px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #1a1a1a;
-            /* Set the background color to dark */
-            color: #fff;
-            /* Set the text color to white */
-            text-align: left;
-            transition: transform 0.3s ease;
-            border: 4px double #fff;
-            /* Add a double-lined white border */
-         }
-
-         .about-section:hover {
-            transform: scale(1.02);
-         }
-
-         .button1 {
-            display: inline-block;
-            padding: 20px 40px;
-            font-size: 26px;
-            border-radius: 10px;
-            margin: 15px;
-            border: none;
-            cursor: pointer;
-            background: linear-gradient(45deg, #ffae42 50%, #333 50%);
-            background-size: 200% 100%;
-            color: #fff;
-            animation: gradient 3s infinite;
-            transition: transform 0.3s ease;
-            pointer-events: auto;
-            text-decoration: none;
-            height: 25px;
-            width: 160px;
-         }
-
-         .button2 {
-            display: inline-block;
-            padding: 20px 40px;
-            font-size: 26px;
-            border-radius: 10px;
-            margin: 15px;
-            border: none;
-            cursor: pointer;
-            background: linear-gradient(45deg, #333 50%, #666 50%);
-            background-size: 200% 100%;
-            color: #fff;
-            animation: gradient 3s infinite;
-            transition: transform 0.3s ease;
-            pointer-events: auto;
-            text-decoration: none;
-            height: 25px;
-            width: 160px;
-         }
-
-         .button:hover {
-            transform: scale(1.05);
-         }
-
-         .button-container {
-            background: linear-gradient(45deg, #ffae42 50%, #333 50%);
-            margin: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 50px;
-            animation: gradient 3s infinite;
-            border-radius: 10px;
-            padding: 10px;
-         }
-
-         #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            /* Ensure particles are behind other content */
-         }
-
-         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: flex-start;
-            height: 66vh;
-            overflow: hidden;
-            /* Prevents body overflow */
-            margin-left: 30px;
-            margin-right: 30px;
-            border-radius: 10px;
-         }
-
-         .header {
-            display: flex;
-            justify-content: space-between;
-            background: linear-gradient(45deg, #333 50%, #666 50%);
-            background-size: 200% 100%;
-            animation: gradient 3s infinite;
-            transition: transform 0.3s ease;
-            pointer-events: auto;
-            padding: 10px;
-            color: #fff;
-            border-bottom: 1px solid #555;
-         }
-
-         pre {
-            white-space: pre-wrap;
-            overflow: auto;
-            background-color: black;
-            color: #c7c7c7;
-            padding: 20px;
-            border-radius: 5px;
-            flex-grow: 1;
-            margin: 0;
-         }
-
-         .title {
-            margin-top: 6px;
-            margin-left: 10px;
-         }
-
-         hr {
-            width: 80%;
-            background-color: white;
-            height: 1px;
-            border: none;
-         }
-         
-
-        /* Styling for HTML tags */
-        .code-container .html-tag {
-            color: #2d9cdb; /* Blue color for HTML tags */
-        }
-
-        /* Styling for HTML attributes */
-        .code-container .html-attribute {
-            color: #f07178; /* Red color for HTML attributes */
-        }
-
-        /* Styling for HTML attribute values */
-        .code-container .html-value {
-            color: #68d391; /* Green color for HTML attribute values */
-        }
-        
-        /* Styling for JavaScript keywords */
-        .code-container .language-javascript .token.keyword {
-            color: #ff7b72; /* Change this color for JavaScript keywords */
-        }
-
-        /* Styling for string literals */
-        .code-container .language-javascript .token.string {
-            color: #68d391; /* Change this color for string literals */
-        }
-      </style>
-   </head>
-   <body>
-      <!-- Google Tag Manager (noscript) -->
-      <noscript>
-         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9TV4XJC" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-      </noscript>
-      <!-- End Google Tag Manager (noscript) -->
-      <!-- Particles.js container -->
-      <div id="particles-js"></div>
-      <header>
-         <h1>Welcome <br />
-            <span class="span1">To My </span1>
-               <br />
-               <span class="span2">World </span2>
-         </h1>
-      </header>
-      <div class="about-section">
-         <h2>Hello!</h2>
-         <p>I am Vignesh..., <br /> A passionate web developer and creative individual on a quest to leave an indelible mark on the world. <br />
-            <br> My journey is getting ready for diverse experiences, innovative projects, and a relentless pursuit of excellence. <br />
-            <br> Join me as we embark on an odyssey through the realms of design, development, and creativity.
-         </p>
-      </div>
-      <div class="button-container">
-         <a style="background: linear-gradient(45deg, #ffae42 50%, #333 50%)" href="ai.html" class="button button1">Own AI</a>
-         <a href="biodata.html" class="button button2">Bio Data</a>
-         <a href="skills.html" class="button button2">Skills</a>
-         <a href="certificates.html" class="button button2">Certificates</a>
-         <a href="gallery.html" class="button button2">Gallery</a>
-         <a href="https://youtube.com/@legendaryone7278?si=W1f18ce7mihr82ly" class="button button2">Youtube</a>
-         <a href="game.html" class="button button2">Games</a>
-         <a href="contact.html" class="button button2">Contact Me</a>
-      </div>
-      <hr>
-      <br>
-      <h2>How I Made This?</h2>
-      <div class="container">
-         <div class="header">
-            <div class="title">
-               <b>PROGRAM</b>
-            </div>
-         </div>
-         <pre id="html-code"></pre>
-      </div>
-      
-      
-
-      <footer>
-         <p>&copy;Designed By Legendary One</p>
-      </footer>
-      <script>
-         // Initialize Particles.js
-         particlesJS('particles-js', {
-            particles: {
-               number: {
-                  value: 66,
-                  density: {
-                     enable: true,
-                     value_area: 800
-                  }
-               },
-               color: {
-                  value: '#ffffff'
-               },
-               shape: {
-                  type: 'circle',
-                  stroke: {
-                     width: 0,
-                     color: '#000000'
-                  },
-                  polygon: {
-                     nb_sides: 5
-                  },
-                  image: {
-                     src: 'img/github.svg',
-                     width: 100,
-                     height: 100
-                  }
-               },
-               opacity: {
-                  value: 0.5,
-                  random: false,
-                  anim: {
-                     enable: false,
-                     speed: 1,
-                     opacity_min: 0.1,
-                     sync: false
-                  }
-               },
-               size: {
-                  value: 6,
-                  random: true,
-                  anim: {
-                     enable: false,
-                     speed: 40,
-                     size_min: 0.1,
-                     sync: false
-                  }
-               },
-               line_linked: {
-                  enable: true,
-                  distance: 150,
-                  color: '#ffffff',
-                  opacity: 0.4,
-                  width: 1
-               },
-               move: {
-                  enable: true,
-                  speed: 6,
-                  direction: 'none',
-                  random: false,
-                  straight: false,
-                  out_mode: 'out',
-                  bounce: false,
-                  attract: {
-                     enable: false,
-                     rotateX: 600,
-                     rotateY: 1200
-                  }
-               }
-            },
-            interactivity: {
-               detect_on: 'canvas',
-               events: {
-                  onhover: {
-                     enable: true,
-                     mode: 'grab'
-                  },
-                  onclick: {
-                     enable: true,
-                     mode: 'push'
-                  },
-                  resize: true
-               },
-               modes: {
-                  grab: {
-                     distance: 140,
-                     line_linked: {
-                        opacity: 1
-                     }
-                  },
-                  bubble: {
-                     distance: 400,
-                     size: 40,
-                     duration: 2,
-                     opacity: 8,
-                     speed: 3
-                  },
-                  repulse: {
-                     distance: 200,
-                     duration: 0.4
-                  },
-                  push: {
-                     particles_nb: 4
-                  },
-                  remove: {
-                     particles_nb: 2
-                  }
-               }
-            },
-            retina_detect: true
-         });
-         document.addEventListener("DOMContentLoaded", function() {
-            const buttonContainer = document.querySelector(".button-container");
-            const particlesContainer = document.getElementById("particles-js");
-            const gradientBackground = "none";
-            buttonContainer.style.background = gradientBackground;
-            particlesContainer.style.pointerEvents = "none";
-         });
-      </script>
-      <script>
-        // Fetch the content of the text file from Github
-        fetch('showprogram.txt')
-            .then(response => response.text())
-            .then(data => {
-                // Display the content in the pre tag
-                document.getElementById('html-code').innerText = data;
-            })
-            .catch(error => console.error('Error fetching code:', error));
-
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-299639386-1');
     </script>
-      
-</body>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-N9TV4XJC');
+    </script>
+    <!-- End Google Tag Manager -->
+    <style>
+      @keyframes gradient {
+        0% {
+          background-position: 200% 0;
+        }
+
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        color: #fff;
+        background-color: #1a1a1a;
+        /* Set the background color to dark */
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+
+      header,
+      footer {
+        background-color: #1a1a1a;
+        padding: 0px;
+        color: #fff;
+      }
+
+      h1 {
+        font-size: 36px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(45deg, #ffae42 50%, #333 50%);
+        background-size: 200% 100%;
+        animation: gradient 3s infinite;
+        text-transform: uppercase;
+        padding: 10px;
+        display: inline-block;
+        width: 300px;
+      }
+
+      .span1 {
+        font-size: 16px;
+      }
+
+      .span2 {
+        font-size: 36px;
+      }
+
+      h2 {
+        color: #ffae42;
+      }
+
+      .about-section {
+        margin-top: 0px;
+        margin: 50px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #1a1a1a;
+        /* Set the background color to dark */
+        color: #fff;
+        /* Set the text color to white */
+        text-align: left;
+        transition: transform 0.3s ease;
+        border: 4px double #fff;
+        /* Add a double-lined white border */
+      }
+
+      .about-section:hover {
+        transform: scale(1.02);
+      }
+
+      .button1 {
+        display: inline-block;
+        padding: 20px 40px;
+        font-size: 26px;
+        border-radius: 10px;
+        margin: 15px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(45deg, #ffae42 50%, #333 50%);
+        background-size: 200% 100%;
+        color: #fff;
+        animation: gradient 3s infinite;
+        transition: transform 0.3s ease;
+        pointer-events: auto;
+        text-decoration: none;
+        height: 25px;
+        width: 160px;
+      }
+
+      .button2 {
+        display: inline-block;
+        padding: 20px 40px;
+        font-size: 26px;
+        border-radius: 10px;
+        margin: 15px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(45deg, #333 50%, #666 50%);
+        background-size: 200% 100%;
+        color: #fff;
+        animation: gradient 3s infinite;
+        transition: transform 0.3s ease;
+        pointer-events: auto;
+        text-decoration: none;
+        height: 25px;
+        width: 160px;
+      }
+
+      .button:hover {
+        transform: scale(1.05);
+      }
+
+      .button-container {
+        background: linear-gradient(45deg, #ffae42 50%, #333 50%);
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 50px;
+        animation: gradient 3s infinite;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        /* Ensure particles are behind other content */
+      }
+
+      .container {
+        background-color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        height: 66vh;
+        overflow: hidden;
+        /* Prevents body overflow */
+        margin-left: 30px;
+        margin-right: 30px;
+        border-radius: 10px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        background: linear-gradient(45deg, #333 50%, #666 50%);
+        background-size: 200% 100%;
+        animation: gradient 3s infinite;
+        transition: transform 0.3s ease;
+        pointer-events: auto;
+        padding: 10px;
+        color: #fff;
+        border-bottom: 1px solid #555;
+      }
+
+      pre {
+        background-color: black;
+        white-space: pre-wrap;
+        overflow: auto;
+        color: #c7c7c7;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 0;
+      }
+
+      .title {
+        margin-top: 6px;
+        margin-left: 10px;
+      }
+
+      hr {
+        width: 80%;
+        background-color: white;
+        height: 1px;
+        border: none;
+      }
+
+      /* Additional styles for HTML syntax highlighting */
+      .code-container .html-tag {
+        color: blue;
+        /* HTML tags */
+      }
+
+      .code-container .html-attribute {
+        color: red;
+        /* HTML attributes */
+      }
+
+      .code-container .html-value {
+        color: green;
+        /* Attribute values */
+      }
+
+      .code-container .language-javascript .token.keyword {
+        color: purple;
+        /* JavaScript keywords */
+      }
+
+      .code-container .language-javascript .token.string {
+        color: orange;
+        /* Strings in JavaScript */
+      }
+
+      /* Add more styles for other token types as needed */
+    </style>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N9TV4XJC" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Particles.js container -->
+    <div id="particles-js"></div>
+    <header>
+      <h1>Welcome <br />
+        <span class="span1">To My </span1>
+          <br />
+          <span class="span2">World </span2>
+      </h1>
+    </header>
+    <div class="about-section">
+      <h2>Hello!</h2>
+      <p>I am Vignesh..., <br /> A passionate web developer and creative individual on a quest to leave an indelible mark on the world. <br />
+        <br> My journey is getting ready for diverse experiences, innovative projects, and a relentless pursuit of excellence. <br />
+        <br> Join me as we embark on an odyssey through the realms of design, development, and creativity.
+      </p>
+    </div>
+    <div class="button-container">
+      <a style="background: linear-gradient45deg, #ffae42 50%, #333 50%" href="ai.html" class="button button1">Own AI</a>
+      <a href="biodata.html" class="button button2">Bio Data</a>
+      <a href="skills.html" class="button button2">Skills</a>
+      <a href="certificates.html" class="button button2">Certificates</a>
+      <a href="gallery.html" class="button button2">Gallery</a>
+      <a href="https://youtube.com/@legendaryone7278?si=W1f18ce7mihr82ly" class="button button2">Youtube</a>
+      <a href="game.html" class="button button2">Games</a>
+      <a href="contact.html" class="button button2">Contact Me</a>
+    </div>
+    <hr>
+    <br>
+    <h2>How I Made This?</h2>
+    <div class="container">
+      <div class="header">
+        <div class="title">
+          <b>PROGRAM</b>
+        </div>
+      </div>
+      <pre id="html-code" class="language-html">
+															<!-- HTML code will be displayed here with Prism.js syntax highlighting -->
+														</pre>
+    </div>
+    <footer>
+      <p>&copy;Designed By Legendary One</p>
+    </footer>
+    <script>
+      // Initialize Particles.js
+      particlesJS('particles-js', {
+        particles: {
+          number: {
+            value: 66,
+            density: {
+              enable: true,
+              value_area: 800
+            }
+          },
+          color: {
+            value: '#ffffff'
+          },
+          shape: {
+            type: 'circle',
+            stroke: {
+              width: 0,
+              color: '#000000'
+            },
+            polygon: {
+              nb_sides: 5
+            },
+            image: {
+              src: 'img/github.svg',
+              width: 100,
+              height: 100
+            }
+          },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: {
+              enable: false,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false
+            }
+          },
+          size: {
+            value: 6,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 40,
+              size_min: 0.1,
+              sync: false
+            }
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: '#ffffff',
+            opacity: 0.4,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 6,
+            direction: 'none',
+            random: false,
+            straight: false,
+            out_mode: 'out',
+            bounce: false,
+            attract: {
+              enable: false,
+              rotateX: 600,
+              rotateY: 1200
+            }
+          }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: {
+            onhover: {
+              enable: true,
+              mode: 'grab'
+            },
+            onclick: {
+              enable: true,
+              mode: 'push'
+            },
+            resize: true
+          },
+          modes: {
+            grab: {
+              distance: 140,
+              line_linked: {
+                opacity: 1
+              }
+            },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3
+            },
+            repulse: {
+              distance: 200,
+              duration: 0.4
+            },
+            push: {
+              particles_nb: 4
+            },
+            remove: {
+              particles_nb: 2
+            }
+          }
+        },
+        retina_detect: true
+      });
+      document.addEventListener("DOMContentLoaded", function() {
+        const buttonContainer = document.querySelector(".button-container");
+        const particlesContainer = document.getElementById("particles-js");
+        const gradientBackground = "none";
+        buttonContainer.style.background = gradientBackground;
+        particlesContainer.style.pointerEvents = "none";
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        fetch('showprogram.txt').then(response => response.text()).then(data => {
+          // Display the content in the pre tag
+          document.getElementById('html-code').innerHTML = Prism.highlight(data, Prism.languages.html);
+        }).catch(error => console.error('Error fetching code:', error));
+      });
+    </script>
+  </body>
 </html>
