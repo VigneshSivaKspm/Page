@@ -271,8 +271,8 @@
             </div>
          </div>
          <pre id="html-code" class="language-html">
-															<!-- HTML code will be displayed here with Prism.js syntax highlighting -->
-														</pre>
+									<!-- HTML code will be displayed here with Prism.js syntax highlighting -->
+									</pre>
       </div>
       <footer>
          <p>&copy;Designed By Legendary One</p>
