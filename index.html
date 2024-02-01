@@ -84,7 +84,7 @@
          font-size: 36px;
          }
          h2 {
-           font-size: 30px;
+         font-size: 30px;
          color: #76FF03;
          }
          .about-section {
@@ -106,8 +106,8 @@
          transform: scale(1.02);
          }
          p {
-           font-size: 20px;
-           font-family: Copperplate, sans-serif; /* Use Copperplate font */
+         font-size: 20px;
+         font-family: Copperplate, Papyrus, fantasy, sans-serif; /* Fallback to generic sans-serif if Copperplate is not available */
          }
          .button1 {
          display: inline-block;
@@ -232,6 +232,72 @@
          color: orange;
          /* Strings in JavaScript */
          }
+         .clock {
+         background: linear-gradient(45deg, transparent 50%, #76FF03 50%); /* Adjusted gradient blue color */
+         background-size: 200% 100%;
+         animation: gradient 3s infinite;
+         text-transform: uppercase;
+         position: relative;
+         width: 250px;
+         height: 250px;
+         border-radius: 50%;
+         border: 0px solid white;
+         background-color: transparent;
+         margin: auto; /* Center the clock on the screen */
+         }
+         .hour,
+         .minute,
+         .second {
+         position: absolute;
+         margin: auto;
+         transform-origin: 50% 100%; /* Changed transform origin */
+         }
+         .hour {
+         background-color: white;
+         width: 3px;
+         height: 70px;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -100%) rotate(90deg); /* Adjusted transform */
+         }
+         .minute {
+         background-color: white;
+         width: 2px;
+         height: 90px;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -100%) rotate(180deg); /* Adjusted transform */
+         }
+         .second {
+         width: 3px;
+         height: 110px;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -100%) rotate(270deg); /* Adjusted transform */
+         background-color: red;
+         }
+         /* Style for the words */
+         .word {
+         position: absolute; 
+         font-weight: bold;
+         color: black;
+         text-align: center;
+         width: 100%;
+         }
+         .upper-word {
+         font-size: 40px;
+         top: 60px;
+         }
+         .center-word {
+         font-size: 20px;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         }
+         .lower-word {
+         font-size: 40px;
+         bottom: 60px;
+         }
          /* Add more styles for other token types as needed */
       </style>
    </head>
@@ -244,19 +310,26 @@
       <!-- Particles.js container -->
       <div id="particles-js"></div>
       <header>
-         <h1>Welcome <br />
-            <span class="span1">To My </span1>
-            <br />
-            <span class="span2">World </span2>
-         </h1>
+         <br>
+         <div class="clock">
+            <!-- Insert upper word -->
+            <div class="word upper-word">Welcome</div>
+            <!-- Insert center word -->
+            <div class="word center-word">&nbsp;To My</div>
+            <!-- Insert lower word -->
+            <div class="word lower-word">World</div>
+            <div class="hour" id="hour"></div>
+            <div class="minute" id="minute"></div>
+            <div class="second" id="second"></div>
+         </div>
       </header>
       <div class="about-section">
-    <h2>Hello....,<br>I'm Vignesh!</h2>
-    <p>Welcome to my world of creativity and innovation in web development. I'm a passionate web developer on a mission to craft engaging and user-friendly digital experiences that leave a lasting impact.</p>
-    <p>With a relentless pursuit of excellence, I embark on each project as a journey of discovery and growth.</p>
-    <p>But it's not just about coding for me; it's about storytelling through design, creating intuitive user interfaces, and pushing the boundaries of what's possible in the digital realm. Whether it's building responsive websites, dynamic web applications, or immersive multimedia experiences, I strive to exceed expectations and deliver results that inspire.</p>
-    <p>Join me on this exciting journey through the ever-evolving landscape of web development, where creativity knows no bounds and innovation knows no limits. Let's collaborate, innovate, and create something extraordinary together!</p>
-    </div>
+         <h2>Hello💚e,<br>I'm Vignesh!</h2>
+         <p>Welcome to my world of creativity and innovation in web development. I'm a passionate web developer on a mission to craft engaging and user-friendly digital experiences that leave a lasting impact.</p>
+         <p>With a relentless pursuit of excellence, I embark on each project as a journey of discovery and growth.</p>
+         <p>But it's not just about coding for me; it's about storytelling through design, creating intuitive user interfaces, and pushing the boundaries of what's possible in the digital realm. Whether it's building responsive websites, dynamic web applications, or immersive multimedia experiences, I strive to exceed expectations and deliver results that inspire.</p>
+         <p>Join me on this exciting journey through the ever-evolving landscape of web development, where creativity knows no bounds and innovation knows no limits. Let's collaborate, innovate, and create something extraordinary together!</p>
+      </div>
       <div class="button-container">
          <a style="background: linear-gradient45deg, #ffae42 50%, #333 50%" href="ai.html" class="button button1">Own AI</a>
          <a href="biodata.html" class="button button2">Bio Data</a>
@@ -411,6 +484,25 @@
              document.getElementById('html-code').innerHTML = Prism.highlight(data, Prism.languages.html);
            }).catch(error => console.error('Error fetching code:', error));
          });
+      </script>
+      <script>
+         function updateClock() {
+           const now = new Date();
+           const hour = now.getHours() % 12;
+           const minute = now.getMinutes();
+           const second = now.getSeconds();
+           
+           const hourDeg = (hour * 30) + (0.5 * minute);
+           const minuteDeg = (minute * 6) + (0.1 * second);
+           const secondDeg = second * 6;
+           
+           document.getElementById('hour').style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+           document.getElementById('minute').style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
+           document.getElementById('second').style.transform = `translate(-50%, -100%) rotate(${secondDeg}deg)`;
+         }
+         
+         setInterval(updateClock, 1000);
+         updateClock(); // Initial call to set the correct time immediately
       </script>
    </body>
 </html>
