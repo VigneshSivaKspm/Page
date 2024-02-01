@@ -103,6 +103,22 @@
 
     <button type="submit" onclick="submitForm()">Send</button>
 </form>
+<!-- modify this form HTML and place wherever you want your form -->
+<form
+  action="https://formspree.io/f/mayrygqg"
+  method="POST"
+>
+  <label>
+    Email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
 
 <p><i class="fas fa-envelope contact-icons">&nbsp;</i>Email: <a id="emailLink" href="#">legendaryoneff@gmail.com</a></p>
 <p><i class="fab fa-instagram contact-icons">&nbsp;</i>Instagram: <a href="https://www.instagram.com/legendaryoneofficial/" target="_blank">@legendaryoneofficial</a></p>
@@ -129,6 +145,8 @@
         emailLink.href = "mailto:legendaryoneff@gmail.com";
     }
 </script>
+
+
 
 </body>
 </html>
