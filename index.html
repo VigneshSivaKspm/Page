@@ -298,6 +298,26 @@
          font-size: 40px;
          bottom: 60px;
          }
+         
+
+#downloadBtn {
+    background-color: Red; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+#downloadBtn:hover {
+    background-color: #45a049; /* Darker Green */
+}
+
          /* Add more styles for other token types as needed */
       </style>
    </head>
@@ -323,6 +343,9 @@
             <div class="second" id="second"></div>
          </div>
       </header>
+      <br>
+      <button id="downloadBtn"><b>DOWNLOAD RESUME</b></button>
+      <script src="script.js"></script>
       <div class="about-section">
          <h2>Hello...,<br>I'm Vignesh!</h2>
          <p>Welcome to my world of creativity and innovation in web development. I'm a passionate web developer on a mission to craft engaging and user-friendly digital experiences that leave a lasting impact.</p>
@@ -503,6 +526,11 @@
          
          setInterval(updateClock, 1000);
          updateClock(); // Initial call to set the correct time immediately
+      </script>
+      <script>
+      document.getElementById("downloadBtn").addEventListener("click", function() {
+    window.location.href = "resume.pdf";
+});
       </script>
    </body>
 </html>
