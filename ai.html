@@ -855,7 +855,10 @@ else if (userInput.includes('who won the last Nobel Prize in Literature')) {
 }
 else if (userInput.includes('who is shalini')) {
     respondToWhoIsShalini();
-    }
+}
+else if (userInput.includes('who is vignesh')) {
+    respondToWhoIsVignesh();
+}
         else {
             respondToUnknownQuestion();
         }
@@ -2044,6 +2047,11 @@ function respondToNobelPrizeLiterature2023() {
 
 function respondToWhoIsShalini() {
     const nobelPrizeLiterature2023Response = "She Is An Angel In My World.";
+    appendMessage(`AI: ${nobelPrizeLiterature2023Response}`, 'ai');
+}
+
+function respondToWhoIsVignesh() {
+    const nobelPrizeLiterature2023Response = "I Was Created By Him.";
     appendMessage(`AI: ${nobelPrizeLiterature2023Response}`, 'ai');
 }
     
