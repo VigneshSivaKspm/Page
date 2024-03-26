@@ -853,6 +853,9 @@ else if (userInput.includes('what is the purpose of life')) {
 else if (userInput.includes('who won the last Nobel Prize in Literature')) {
     respondToNobelPrizeLiterature2023();
 }
+else if (userInput.includes('who is shalini')) {
+    respondToWhoIsShalini();
+    }
         else {
             respondToUnknownQuestion();
         }
@@ -2039,6 +2042,11 @@ function respondToNobelPrizeLiterature2023() {
     appendMessage(`AI: ${nobelPrizeLiterature2023Response}`, 'ai');
 }
 
+function respondToWhoIsShalini() {
+    const nobelPrizeLiterature2023Response = "She Is An Angel In My World.";
+    appendMessage(`AI: ${nobelPrizeLiterature2023Response}`, 'ai');
+}
+    
 function respondToUnknownQuestion() {
     const unknownResponse = "I'm not sure about that. Feel free to ask another question!";
     appendMessage(`AI: ${unknownResponse}`, 'ai');
