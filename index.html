@@ -83,10 +83,7 @@
          .span2 {
          font-size: 36px;
          }
-         h2 {
-         font-size: 30px;
-         color: #76FF03;
-         }
+         
          .about-section {
          margin-top: 0px;
          margin: 25px;
@@ -318,6 +315,18 @@
     background-color: #45a049; /* Darker Green */
 }
 
+.intro {
+    text-align: center;
+}
+
+.intro-text {
+    font-size: 2em;
+    border-right: 2px solid #61dafb;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
          /* Add more styles for other token types as needed */
       </style>
    </head>
@@ -344,10 +353,11 @@
          </div>
       </header>
       <br>
-      <button id="downloadBtn"><b>DOWNLOAD RESUME</b></button>
-      <script src="script.js"></script>
+      <div class="intro">
+        <h2 class="intro-text"></h2>
+    </div>
       <div class="about-section">
-         <h2>Hello...,<br>I'm Vignesh!</h2>
+         
          <p>Welcome to my world of creativity and innovation in web development. I'm a passionate web developer on a mission to craft engaging and user-friendly digital experiences that leave a lasting impact.</p>
          <p>With a relentless pursuit of excellence, I embark on each project as a journey of discovery and growth.</p>
          <p>But it's not just about coding for me; it's about storytelling through design, creating intuitive user interfaces, and pushing the boundaries of what's possible in the digital realm. Whether it's building responsive websites, dynamic web applications, or immersive multimedia experiences, I strive to exceed expectations and deliver results that inspire.</p>
@@ -376,6 +386,8 @@
 															<!-- HTML code will be displayed here with Prism.js syntax highlighting -->
 														</pre>
       </div>
+      <br>
+      <button id="downloadBtn"><b>DOWNLOAD RESUME</b></button>
       <footer>
          <p>&copy;Designed By Legendary One</p>
       </footer>
@@ -532,5 +544,31 @@
     window.location.href = "resume.pdf";
 });
       </script>
-   </body>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const textElement = document.querySelector('.intro-text');
+    const text = "Hello,I'm Vignesh!";
+    let index = 0;
+    const speed = 100; // Typing speed in milliseconds
+
+    function typeEffect() {
+        if (index < text.length) {
+            textElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeEffect, speed);
+        } else {
+            setTimeout(() => {
+                textElement.textContent = "";
+                index = 0;
+                typeEffect();
+            }, 3000); // Delay before restarting the typing effect
+        }
+    }
+
+    typeEffect();
+});
+
+  </script>
+  </body>
 </html>
