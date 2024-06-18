@@ -377,6 +377,8 @@
 														</pre>
       </div>
       <br>
+      <button id="playMusicBtn">Play Music</button>
+      <br>
       <div class="visualizer-container">
         <div id="visualizer"></div>
     </div>
@@ -384,7 +386,17 @@
          <p>&copy;Designed By Legendary One</p>
       </footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="script.js"></script>
+   
+<script>
+document.getElementById('playMusicBtn').addEventListener('click', function() {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    source.start(0);
+    this.style.display = 'none'; // Hide button after clicking
+});
+</script>
+
       <script>
          // Initialize Particles.js
          particlesJS('particles-js', {
@@ -539,10 +551,10 @@
 });
       </script>
       <script>
-      let scene, camera, renderer, analyser, dataArray, audioContext, source;
+  let scene, camera, renderer, analyser, dataArray, audioContext, source;
 let bars = [];
 const numBars = 64;
-const defaultSong = 'song.mp3'; // Update this path
+const defaultSong = 'song.mp3'; // Ensure this path is correct
 
 function init() {
     // Create scene
@@ -614,13 +626,15 @@ function loadAndPlayDefaultSong() {
             analyser.connect(audioContext.destination);
 
             source.start(0);
+        })
+        .catch(error => {
+            console.error('Error loading or playing the audio file:', error);
         });
 }
 
 // Initialize and animate the scene
 init();
 animate();
-
-      </script>
+</script>
    </body>
 </html>
