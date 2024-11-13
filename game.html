@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic Snake Game</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 2px solid white;
+            background-color: black;
+            margin-top: 10px;
+        }
+        .snake-head, .snake-body, .snake-tail, .food {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-size: cover;
+        }
+        .snake-head {
+            background-image: url('head.png'); /* Image for snake head */
+        }
+        .snake-body {
+            background-image: url('body.png'); /* Image for snake body segment */
+        }
+        .snake-tail {
+            background-image: url('tail.png'); /* Image for snake tail */
+        }
+        .food {
+            background-color: red;
+            border-radius: 50%;
+        }
+        #score {
+            font-size: 18px;
+            color: white;
+            margin: 10px 0;
+            text-align: center;
+        }
+        footer {
+            color: white;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p id="score"><mark><b>Score: 0</b></mark></p>
+    <section id="game">
+        <div id="game-container">
+            <div id="food" class="food"></div>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; Designed By Legendary One</p>
+    </footer>
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score');
+        const food = document.getElementById('food');
+
+        let score = 0;
+        let direction = 'right';
+        let snakeBody = [{ x: 0, y: 0 }];
+        let gameRunning = false;
+        let gameInterval;
+        let speed = 200;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const minSwipeDistance = 30;
+
+        function startGame() {
+            if (!gameRunning) {
+                gameRunning = true;
+                generateFood();
+                gameInterval = setInterval(moveSnake, speed);
+            }
+        }
+
+        document.body.addEventListener('touchstart', (e) => {
+            if (!gameRunning) startGame();
+            touchStartX = e.changedTouches[0].pageX;
+            touchStartY = e.changedTouches[0].pageY;
+        });
+
+        document.body.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].pageX;
+            const touchEndY = e.changedTouches[0].pageY;
+
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
+                if (diffX > 0 && direction !== 'left') direction = 'right';
+                else if (diffX < 0 && direction !== 'right') direction = 'left';
+            } else if (Math.abs(diffY) > minSwipeDistance) {
+                if (diffY > 0 && direction !== 'up') direction = 'down';
+                else if (diffY < 0 && direction !== 'down') direction = 'up';
+            }
+        });
+
+        function moveSnake() {
+            const head = { ...snakeBody[0] };
+
+            switch (direction) {
+                case 'up': head.y -= 20; break;
+                case 'down': head.y += 20; break;
+                case 'left': head.x -= 20; break;
+                case 'right': head.x += 20; break;
+            }
+
+            snakeBody.unshift(head);
+
+            if (head.x === food.offsetLeft && head.y === food.offsetTop) {
+                increaseScore();
+                generateFood();
+            } else {
+                snakeBody.pop();
+            }
+
+            renderSnake();
+            checkCollision();
+        }
+
+        function renderSnake() {
+            document.querySelectorAll('.snake-head, .snake-body, .snake-tail').forEach((segment) => segment.remove());
+
+            snakeBody.forEach((segment, index) => {
+                const snakeSegment = document.createElement('div');
+
+                if (index === 0) {
+                    snakeSegment.className = 'snake-head'; // Head
+                } else if (index === snakeBody.length - 1) {
+                    snakeSegment.className = 'snake-tail'; // Tail
+                } else {
+                    snakeSegment.className = 'snake-body'; // Body segment
+                }
+
+                snakeSegment.style.left = `${segment.x}px`;
+                snakeSegment.style.top = `${segment.y}px`;
+                gameContainer.appendChild(snakeSegment);
+            });
+        }
+
+        function generateFood() {
+            const maxX = gameContainer.clientWidth - food.clientWidth;
+            const maxY = gameContainer.clientHeight - food.clientHeight;
+
+            const randomX = Math.floor(Math.random() * (maxX / 20)) * 20;
+            const randomY = Math.floor(Math.random() * (maxY / 20)) * 20;
+
+            food.style.left = `${randomX}px`;
+            food.style.top = `${randomY}px`;
+        }
+
+        function increaseScore() {
+            score++;
+            scoreDisplay.innerText = `Score: ${score}`;
+            if (score % 5 === 0) {
+                speed = Math.max(50, speed - 20);
+                clearInterval(gameInterval);
+                gameInterval = setInterval(moveSnake, speed);
+            }
+        }
+
+        function checkCollision() {
+            if (
+                snakeBody[0].x < 0 ||
+                snakeBody[0].x >= gameContainer.clientWidth ||
+                snakeBody[0].y < 0 ||
+                snakeBody[0].y >= gameContainer.clientHeight
+            ) {
+                gameOver();
+            }
+
+            for (let i = 1; i < snakeBody.length; i++) {
+                if (snakeBody[i].x === snakeBody[0].x && snakeBody[i].y === snakeBody[0].y) {
+                    gameOver();
+                    break;
+                }
+            }
+        }
+
+        function gameOver() {
+            alert(`Game Over! Your score: ${score}`);
+            resetGame();
+        }
+
+        function resetGame() {
+            score = 0;
+            speed = 200;
+            scoreDisplay.innerText = `Score: ${score}`;
+            direction = 'right';
+            snakeBody = [{ x: 0, y: 0 }];
+            renderSnake();
+            generateFood();
+        }
+
+        generateFood();
+    </script>
+</body>
+</html>
